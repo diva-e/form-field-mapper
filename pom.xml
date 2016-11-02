@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.diva-e.firstspirit</groupId>
+	<artifactId>form-field-mapper</artifactId>
+	<version>1.0.0</version>
+
+	<name>FirstSpirit Form Field Mapper</name>
+	<description>Project for mapping java field values into FirstSpirit Fields via annotations and vise versa.</description>
+
+	<url>https://github.com/diva-e/form-field-mapper</url>
+
+	<inceptionYear>2016</inceptionYear>
+
+	<developers>
+		<developer>
+			<name>Christian Stornowski</name>
+			<id>ChristianStornowski</id>
+			<email>christian.stornowski@diva-e.com</email>
+			<organization>diva-e</organization>
+			<organizationUrl>https://www.diva-e.com</organizationUrl>
+		</developer>
+	</developers>
+
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<issueManagement>
+		<system>github</system>
+		<url>https://github.com/diva-e/form-field-mapper/issues</url>
+	</issueManagement>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<firstSpirit.version>[4.2,5.2)</firstSpirit.version>
+	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.5.1</version>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>com.diva-e.firstspirit</groupId>
+				<artifactId>firstspirit-dependencies</artifactId>
+				<version>1.0.3</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<dependencies>
+		<dependency>
+			<groupId>de.espirit.firstspirit</groupId>
+			<artifactId>fs-api</artifactId> <!-- First use official api and then if needed access. We need both because some indirect classes are only in fs-access -->
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>de.espirit.firstspirit</groupId>
+			<artifactId>fs-access</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.diva-e.firstspirit</groupId>
+			<artifactId>firstspirit-mock-utils</artifactId>
+			<version>6.0.0-SNAPSHOT</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.hamcrest</groupId>
+			<artifactId>java-hamcrest</artifactId>
+			<version>2.0.0.0</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+</project>
