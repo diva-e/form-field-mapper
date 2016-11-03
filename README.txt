@@ -25,7 +25,7 @@ This is a FirstSpirit form field mapper that transfer data from a java class via
 ### Via Maven Repo (local or remote)
 #### Maven
 `<dependency>
-	<groupId>com.divae.firstspirit</groupId>
+	<groupId>com.diva-e.firstspirit</groupId>
 	<artifactId>form-field-mapper</artifactId>
 	<version>${form-field-mapper-version}</version>
 </dependency>`
