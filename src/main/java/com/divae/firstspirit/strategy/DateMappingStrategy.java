@@ -1,7 +1,6 @@
 package com.divae.firstspirit.strategy;
 
 import com.divae.firstspirit.AnnotatedMemberModule.AnnotatedMember;
-import com.divae.firstspirit.annotation.FormFieldServant;
 import de.espirit.firstspirit.access.Language;
 import de.espirit.firstspirit.access.store.templatestore.gom.GomFormElement;
 import de.espirit.firstspirit.forms.FormField;

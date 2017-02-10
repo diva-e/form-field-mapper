@@ -17,7 +17,7 @@ public final class FormFieldServant {
 		notNull(formField);
 		notNull(formData);
 
-		return FORM_DATA_SERVANT.<T>getFormField(formData, formField, language);
+		return FORM_DATA_SERVANT.getFormField(formData, formField, language);
 	}
 
 	public String getFormFieldValue(final AnnotatedElement annotatedElement) {
