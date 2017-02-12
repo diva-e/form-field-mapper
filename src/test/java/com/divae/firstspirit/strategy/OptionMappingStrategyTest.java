@@ -8,7 +8,7 @@ import de.espirit.firstspirit.access.store.templatestore.gom.GomFormElement;
 import org.junit.Test;
 
 import static com.divae.firstspirit.AnnotatedMemberModule.getInstance;
-import static com.divae.firstspirit.Creator.build;
+import static com.divae.firstspirit.BuilderMock.build;
 import static com.divae.firstspirit.Proxy.proxy;
 import static com.divae.firstspirit.Proxy.with;
 import static com.divae.firstspirit.access.LanguageMock.languageWith;

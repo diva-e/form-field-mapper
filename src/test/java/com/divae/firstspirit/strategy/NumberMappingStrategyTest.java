@@ -5,7 +5,7 @@ import com.divae.firstspirit.forms.FormFieldMock;
 import org.junit.Test;
 
 import static com.divae.firstspirit.AnnotatedMemberModule.getInstance;
-import static com.divae.firstspirit.Creator.build;
+import static com.divae.firstspirit.BuilderMock.build;
 import static com.divae.firstspirit.access.LanguageMock.languageWith;
 import static com.divae.firstspirit.access.store.templatestore.gom.GomFormElementMock.gomFormElementWith;
 import static org.hamcrest.Matchers.is;

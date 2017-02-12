@@ -6,7 +6,7 @@ import de.espirit.firstspirit.access.editor.value.DomElement;
 import org.junit.Test;
 
 import static com.divae.firstspirit.AnnotatedMemberModule.getInstance;
-import static com.divae.firstspirit.Creator.build;
+import static com.divae.firstspirit.BuilderMock.build;
 import static com.divae.firstspirit.access.LanguageMock.languageWith;
 import static com.divae.firstspirit.access.editor.value.DomElementMock.domElementWith;
 import static com.divae.firstspirit.access.store.templatestore.gom.GomFormElementMock.gomFormElementWith;

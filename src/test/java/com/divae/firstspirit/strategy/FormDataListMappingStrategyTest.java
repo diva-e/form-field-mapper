@@ -17,7 +17,7 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import static com.divae.firstspirit.AnnotatedMemberModule.getInstance;
-import static com.divae.firstspirit.Creator.build;
+import static com.divae.firstspirit.BuilderMock.build;
 import static com.divae.firstspirit.access.LanguageMock.languageWith;
 import static com.divae.firstspirit.access.editor.fslist.IdProvidingFormDataMock.idProvidingFormDataWith;
 import static com.divae.firstspirit.access.editor.value.SectionFormsProducerMock.sectionFormsProducerWith;

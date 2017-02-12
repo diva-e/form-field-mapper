@@ -6,7 +6,7 @@ import com.divae.firstspirit.forms.FormFieldMock;
 import de.espirit.firstspirit.forms.FormData;
 import org.junit.Test;
 
-import static com.divae.firstspirit.Creator.build;
+import static com.divae.firstspirit.BuilderMock.build;
 import static com.divae.firstspirit.access.LanguageMock.languageWith;
 import static com.divae.firstspirit.access.store.templatestore.gom.GomEditorProviderMock.gomEditorProviderWith;
 import static com.divae.firstspirit.access.store.templatestore.gom.GomFormElementMock.gomFormElementWith;
