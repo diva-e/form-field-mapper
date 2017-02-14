@@ -49,7 +49,7 @@ public class DomElementMappingStrategyTest {
 	public void mapFormFieldFieldO() throws Exception {
 		TestClass test = new TestClass();
 
-		de.espirit.firstspirit.forms.FormField<DomElement> formField = build(FormFieldMock.<DomElement>formFieldWith().aValue(build(domElementWith().toText(true, "string"))));
+		de.espirit.firstspirit.forms.FormField<DomElement> formField = build(FormFieldMock.<DomElement>formFieldWith().aValue(build(domElementWith().toText("string", true))));
 		domElementMappingStrategy.map(formField, build(gomFormElementWith("test")), build(languageWith("DE")), getInstance(test.getClass().getField("string")), test);
 
 		assertThat(test.string, is("string"));
@@ -59,7 +59,7 @@ public class DomElementMappingStrategyTest {
 	public void mapFormFieldMethodO() throws Exception {
 		TestClass test = new TestClass();
 
-		de.espirit.firstspirit.forms.FormField<DomElement> formField = build(FormFieldMock.<DomElement>formFieldWith().aValue(build(domElementWith().toText(true, "string"))));
+		de.espirit.firstspirit.forms.FormField<DomElement> formField = build(FormFieldMock.<DomElement>formFieldWith().aValue(build(domElementWith().toText("string", true))));
 		domElementMappingStrategy.map(formField, build(gomFormElementWith("test")), build(languageWith("DE")), getInstance(test.getClass().getMethod("setPrivateString", String.class)), test);
 
 		assertThat(test.getPrivateString(), is("string"));
