@@ -20,7 +20,6 @@ This is a FirstSpirit form field mapper that transfer data from a java class via
 * Maven is required
 * Git is required
 * Clone project via git because no public artifact is available.
-** Building this artifact is only possible without executing tests, because referenced test artifact dependency is not public yet.
 
 ### Via Maven Repo (local or remote)
 #### Maven

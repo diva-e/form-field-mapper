@@ -81,7 +81,7 @@
 		<dependency>
 			<groupId>com.diva-e.firstspirit</groupId>
 			<artifactId>firstspirit-mocks</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
+			<version>1.0.0</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
