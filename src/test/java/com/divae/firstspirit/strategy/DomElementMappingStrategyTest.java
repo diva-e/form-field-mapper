@@ -6,7 +6,7 @@ import de.espirit.firstspirit.access.editor.value.DomElement;
 import org.junit.Test;
 
 import static com.divae.firstspirit.AnnotatedMemberModule.getInstance;
-import static com.divae.firstspirit.Creator.build;
+import static com.divae.firstspirit.BuilderMock.build;
 import static com.divae.firstspirit.access.LanguageMock.languageWith;
 import static com.divae.firstspirit.access.editor.value.DomElementMock.domElementWith;
 import static com.divae.firstspirit.access.store.templatestore.gom.GomFormElementMock.gomFormElementWith;
@@ -49,7 +49,7 @@ public class DomElementMappingStrategyTest {
 	public void mapFormFieldFieldO() throws Exception {
 		TestClass test = new TestClass();
 
-		de.espirit.firstspirit.forms.FormField<DomElement> formField = build(FormFieldMock.<DomElement>formFieldWith().aValue(build(domElementWith().toText(true, "string"))));
+		de.espirit.firstspirit.forms.FormField<DomElement> formField = build(FormFieldMock.<DomElement>formFieldWith().aValue(build(domElementWith().toText("string", true))));
 		domElementMappingStrategy.map(formField, build(gomFormElementWith("test")), build(languageWith("DE")), getInstance(test.getClass().getField("string")), test);
 
 		assertThat(test.string, is("string"));
@@ -59,7 +59,7 @@ public class DomElementMappingStrategyTest {
 	public void mapFormFieldMethodO() throws Exception {
 		TestClass test = new TestClass();
 
-		de.espirit.firstspirit.forms.FormField<DomElement> formField = build(FormFieldMock.<DomElement>formFieldWith().aValue(build(domElementWith().toText(true, "string"))));
+		de.espirit.firstspirit.forms.FormField<DomElement> formField = build(FormFieldMock.<DomElement>formFieldWith().aValue(build(domElementWith().toText("string", true))));
 		domElementMappingStrategy.map(formField, build(gomFormElementWith("test")), build(languageWith("DE")), getInstance(test.getClass().getMethod("setPrivateString", String.class)), test);
 
 		assertThat(test.getPrivateString(), is("string"));

@@ -8,7 +8,7 @@ import de.espirit.firstspirit.access.store.templatestore.gom.GomFormElement;
 import org.junit.Test;
 
 import static com.divae.firstspirit.AnnotatedMemberModule.getInstance;
-import static com.divae.firstspirit.Creator.build;
+import static com.divae.firstspirit.BuilderMock.build;
 import static com.divae.firstspirit.Proxy.proxy;
 import static com.divae.firstspirit.Proxy.with;
 import static com.divae.firstspirit.access.LanguageMock.languageWith;
@@ -34,14 +34,14 @@ public class OptionMappingStrategyTest {
 		TestClass test = new TestClass();
 		test.option = "option";
 
-		OptionFactoryProvider object = build(optionFactoryProviderWith().anOptionFactory(build(optionFactoryWith()
-				.create("option", build(optionWith().aValue("option"))))));
+		OptionFactoryProvider object = build(optionFactoryProviderWith().anOptionFactory(optionFactoryWith()
+				.create(optionWith().aValue("option"), "option")));
 		GomFormElement proxy = proxy(with(object, OptionFactoryProvider.class).aTarget(GomFormElement.class));
 
 		de.espirit.firstspirit.forms.FormField<Option> formField = build(FormFieldMock.<Option>formFieldWith().aType(Option.class));
 		optionMappingStrategy.map(getInstance(test.getClass().getField("option")), test, formField, proxy, build(languageWith("DE")));
 
-		assertThat((String)formField.get().getValue(), is("option"));
+		assertThat(formField.get().getValue(), is("option"));
 	}
 
 	@Test
@@ -49,14 +49,13 @@ public class OptionMappingStrategyTest {
 		TestClass test = new TestClass();
 		test.setPrivateOption("option");
 
-		GomFormElement proxy = proxy(with(build(optionFactoryProviderWith().anOptionFactory(build(optionFactoryWith()
-				.create("option", build(optionWith().aValue("option")))))), OptionFactoryProvider.class).aTarget(GomFormElement.class));
+		GomFormElement proxy = proxy(with(build(optionFactoryProviderWith().anOptionFactory(optionFactoryWith()
+				.create(optionWith().aValue("option"), "option"))), OptionFactoryProvider.class).aTarget(GomFormElement.class));
 
 		de.espirit.firstspirit.forms.FormField<Option> formField = build(FormFieldMock.<Option>formFieldWith().aType(Option.class));
-
 		optionMappingStrategy.map(getInstance(test.getClass().getMethod("getPrivateOption")), test, formField, proxy, build(languageWith("DE")));
 
-		assertThat((String)formField.get().getValue(), is("option"));
+		assertThat(formField.get().getValue(), is("option"));
 	}
 
 	@Test

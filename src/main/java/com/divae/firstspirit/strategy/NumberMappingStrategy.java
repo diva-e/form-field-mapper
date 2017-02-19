@@ -1,7 +1,6 @@
 package com.divae.firstspirit.strategy;
 
 import com.divae.firstspirit.AnnotatedMemberModule.AnnotatedMember;
-import com.divae.firstspirit.annotation.FormFieldServant;
 import de.espirit.firstspirit.access.Language;
 import de.espirit.firstspirit.access.store.templatestore.gom.GomFormElement;
 import de.espirit.firstspirit.forms.FormField;
@@ -9,8 +8,6 @@ import de.espirit.firstspirit.forms.FormField;
 import static org.apache.commons.lang.Validate.notNull;
 
 public class NumberMappingStrategy implements MappingStrategy {
-
-	private final FormFieldServant formFieldServant = new FormFieldServant();
 
 	@Override
 	public boolean matches(final Class<?> fromType, final Class<?> toType) {

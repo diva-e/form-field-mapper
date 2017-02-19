@@ -12,7 +12,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import static com.divae.firstspirit.AnnotatedMemberModule.getInstance;
-import static com.divae.firstspirit.Creator.build;
+import static com.divae.firstspirit.BuilderMock.build;
 import static com.divae.firstspirit.Proxy.proxy;
 import static com.divae.firstspirit.Proxy.with;
 import static com.divae.firstspirit.access.LanguageMock.languageWith;
@@ -40,19 +40,19 @@ public class OptionsMappingStrategyTest {
 		options.add("option2");
 		test.options = options;
 
-		OptionFactoryProvider object = build(optionFactoryProviderWith().anOptionFactory(build(optionFactoryWith()
-				.create("option", build(optionWith().aValue("option")))
-				.create("option2", build(optionWith().aValue("option2"))))));
+		OptionFactoryProvider object = build(optionFactoryProviderWith().anOptionFactory(optionFactoryWith()
+				.create(optionWith().aValue("option"), "option")
+				.create(optionWith().aValue("option2"), "option2")));
 		GomFormElement proxy = proxy(with(object, OptionFactoryProvider.class).aTarget(GomFormElement.class));
 
-		de.espirit.firstspirit.forms.FormField<Set<Option>> formField = build(FormFieldMock.<Set<Option>>formFieldWith().aValue(new HashSet<Option>()));
+		de.espirit.firstspirit.forms.FormField<Set<Option>> formField = build(FormFieldMock.<Set<Option>>formFieldWith().aValue(new HashSet<>()));
 		optionsMappingStrategy.map(getInstance(test.getClass().getField("options")), test, formField, proxy, build(languageWith("DE")));
 
 		Set<Option> createdOptions = formField.get();
 		assertThat(createdOptions.size(), is(2));
 		Iterator<Option> iterator = createdOptions.iterator();
-		assertThat(options.contains((String)iterator.next().getValue()), is(true));
-		assertThat(options.contains((String)iterator.next().getValue()), is(true));
+		assertThat(options.contains((String) iterator.next().getValue()), is(true));
+		assertThat(options.contains((String) iterator.next().getValue()), is(true));
 	}
 
 	@Test
@@ -63,19 +63,19 @@ public class OptionsMappingStrategyTest {
 		options.add("option2");
 		test.setPrivateOptions(options);
 
-		GomFormElement proxy = proxy(with(build(optionFactoryProviderWith().anOptionFactory(build(optionFactoryWith()
-				.create("option", build(optionWith().aValue("option")))
-				.create("option2", build(optionWith().aValue("option2")))))), OptionFactoryProvider.class).aTarget(GomFormElement.class));
+		GomFormElement proxy = proxy(with(build(optionFactoryProviderWith().anOptionFactory(optionFactoryWith()
+				.create(optionWith().aValue("option"), "option")
+				.create(optionWith().aValue("option2"), "option2"))), OptionFactoryProvider.class).aTarget(GomFormElement.class));
 
-		de.espirit.firstspirit.forms.FormField<Set<Option>> formField = build(FormFieldMock.<Set<Option>>formFieldWith().aValue(new HashSet<Option>()));
+		de.espirit.firstspirit.forms.FormField<Set<Option>> formField = build(FormFieldMock.<Set<Option>>formFieldWith().aValue(new HashSet<>()));
 
 		optionsMappingStrategy.map(getInstance(test.getClass().getMethod("getPrivateOptions")), test, formField, proxy, build(languageWith("DE")));
 
 		Set<Option> createdOptions = formField.get();
 		assertThat(createdOptions.size(), is(2));
 		Iterator<Option> iterator = createdOptions.iterator();
-		assertThat(options.contains((String)iterator.next().getValue()), is(true));
-		assertThat(options.contains((String)iterator.next().getValue()), is(true));
+		assertThat(options.contains((String) iterator.next().getValue()), is(true));
+		assertThat(options.contains((String) iterator.next().getValue()), is(true));
 	}
 
 	@Test

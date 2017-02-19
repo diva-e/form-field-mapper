@@ -1,9 +1,9 @@
 package com.divae.firstspirit.strategy;
 
 import com.divae.firstspirit.AnnotatedMemberModule.AnnotatedMember;
-import com.divae.firstspirit.formdatalist.FormDataListServant;
 import com.divae.firstspirit.FormFieldMapper;
 import com.divae.firstspirit.annotation.TemplateServant;
+import com.divae.firstspirit.formdatalist.FormDataListServant;
 import de.espirit.firstspirit.access.Language;
 import de.espirit.firstspirit.access.editor.fslist.IdProvidingFormData;
 import de.espirit.firstspirit.access.store.templatestore.gom.GomFormElement;
@@ -72,10 +72,10 @@ public class FormDataListMappingStrategy implements MappingStrategy {
 		to.set(toObject, object);
 	}
 
-	<O> void map(final Collection<O> objects, final FormDataList formDataList, final Language language){
-		for(final O object : objects) {
+	<O> void map(final Collection<O> objects, final FormDataList formDataList, final Language language) {
+		for (final O object : objects) {
 			final String templateUid = TEMPLATE_SERVANT.getTemplateValue(object.getClass());
-			if (templateUid == null){
+			if (templateUid == null) {
 				continue;
 			}
 
@@ -104,18 +104,18 @@ public class FormDataListMappingStrategy implements MappingStrategy {
 	}
 
 	@SuppressWarnings("unchecked")
-	Object map(final FormDataList formDataList, final Language language, final AnnotatedMember annotatedMember){
+	Object map(final FormDataList formDataList, final Language language, final AnnotatedMember annotatedMember) {
 		final Class<?> parameterClass = annotatedMember.getSetType();
 		final boolean isCollection = Collection.class.isAssignableFrom(parameterClass);
 		final Constructor<?> declaredConstructor = annotatedMember.getSetDeclaredConstructor();
 
-		return !isCollection ?  map(formDataList.get(0), language, declaredConstructor) : map(formDataList, language, declaredConstructor) ;
+		return !isCollection ? map(formDataList.get(0), language, declaredConstructor) : map(formDataList, language, declaredConstructor);
 	}
 
 	<O> Collection<O> map(final FormDataList formDataList, final Language language, final Constructor<O> constructor) {
 		final Collection<O> objects = new ArrayList<>();
 
-		for(final IdProvidingFormData idProvidingFormData : formDataList) {
+		for (final IdProvidingFormData idProvidingFormData : formDataList) {
 			final O object = map(idProvidingFormData, language, constructor);
 			if (object == null) {
 				continue;
@@ -128,7 +128,7 @@ public class FormDataListMappingStrategy implements MappingStrategy {
 	}
 
 	@SuppressWarnings("unchecked")
-	private <O> Collection<O> createCollection(final O object){
-		return object instanceof Collection ? (Collection<O>)object : singletonList(object);
+	private <O> Collection<O> createCollection(final O object) {
+		return object instanceof Collection ? (Collection<O>) object : singletonList(object);
 	}
 }

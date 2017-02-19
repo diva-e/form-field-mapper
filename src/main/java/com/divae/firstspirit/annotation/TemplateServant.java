@@ -20,12 +20,6 @@ public final class TemplateServant {
 		return formFieldAnnotation != null ? formFieldAnnotation.value() : null;
 	}
 
-	public <T> boolean hasTemplateAnnotation(final AccessibleObject accessibleObject){
-		notNull(accessibleObject);
-
-		return getTemplateValue(accessibleObject) != null;
-	}
-
 	public <T> boolean hasTemplateAnnotation(final Class<T> clazz){
 		notNull(clazz);
 

@@ -12,6 +12,7 @@ import de.espirit.firstspirit.forms.FormField;
 import java.util.Collection;
 import java.util.Set;
 
+import static java.util.stream.Collectors.toSet;
 import static org.apache.commons.lang.Validate.notNull;
 
 public class OptionsMappingStrategy implements MappingStrategy {
@@ -39,9 +40,8 @@ public class OptionsMappingStrategy implements MappingStrategy {
 		options.clear();
 
 		final OptionFactory optionFactory = ((OptionFactoryProvider) toGomFormElement).getOptionFactory();
-		for(final String option : (Collection<String>) from.get(fromObject)) {
-			options.add(optionFactory.create(option));
-		}
+		options.addAll(((Collection<String>) from.get(fromObject)).stream().map(optionFactory::create).collect(toSet()));
+
 		formField.set(options);
 	}
 
