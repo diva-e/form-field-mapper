@@ -5,7 +5,8 @@ import com.divae.firstspirit.formdata.FormDataServant;
 import com.divae.firstspirit.strategy.BooleanMappingStrategy;
 import com.divae.firstspirit.strategy.DateMappingStrategy;
 import com.divae.firstspirit.strategy.DomElementMappingStrategy;
-import com.divae.firstspirit.strategy.FormDataListMappingStrategy;
+import com.divae.firstspirit.strategy.FormDataListDatabaseMappingStrategy;
+import com.divae.firstspirit.strategy.FormDataListInlineMappingStrategy;
 import com.divae.firstspirit.strategy.MappingStrategy;
 import com.divae.firstspirit.strategy.MappingStrategyServant;
 import com.divae.firstspirit.strategy.NumberMappingStrategy;
@@ -29,7 +30,7 @@ public class FormFieldMapper {
 	private final List<MappingStrategy> mappingStrategies = asList(new BooleanMappingStrategy(),
 			new DateMappingStrategy(), new DomElementMappingStrategy(), new NumberMappingStrategy(),
 			new StringMappingStrategy(), new OptionsMappingStrategy(), new OptionMappingStrategy(),
-			new FormDataListMappingStrategy());
+            new FormDataListInlineMappingStrategy(), new FormDataListDatabaseMappingStrategy());
 
 	private static final MappingStrategyServant MAPPING_STRATEGY_SERVANT = new MappingStrategyServant();
 	private static final FormDataServant FORM_DATA_SERVANT = new FormDataServant();

@@ -4,16 +4,16 @@ This is a FirstSpirit form field mapper that transfer data from a java class via
 
 ## Features
 * Map different kind of java types from and to java class via annotations
-	* String <-> String
+    * String <-> String
     * Date <-> Date
     * Boolean <-> Boolean
     * Number<-> Number
     * String (HTML) <-> DomElement
-    * Collection<Object> <-> FormDataList (inline)
+    * Collection<Object> <-> FormDataList (inline, database)
     * String <-> Option
     * Collection<Object> <-> Collection<Options>
-* Annotations ca be used in Setter, Getter or accessible class attributes
-* Nested java classes to map for example FirstSpirit FormDataList with section templates
+* Annotations can be used in Setter, Getter or accessible class attributes
+* Map nested java classes for example FirstSpirit FormDataList with section templates
 
 
 ## Installation
