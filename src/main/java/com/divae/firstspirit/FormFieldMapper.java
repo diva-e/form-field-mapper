@@ -50,8 +50,8 @@ public class FormFieldMapper {
 				if (!MAPPING_STRATEGY_SERVANT.matches(fromAnnotatedMember, to, language, mappingStrategy)) {
 					continue;
 				}
-				final String fieldName = fromAnnotatedMember.getFormFieldValue();
-				final FormField<?> toFormField = to.get(language, fieldName);
+                final String fieldName = fromAnnotatedMember.getFormField().value();
+                final FormField<?> toFormField = to.get(language, fieldName);
 				final GomFormElement gomFormElement = FORM_DATA_SERVANT.getGomFormElement(to, fieldName);
 				mappingStrategy.map(fromAnnotatedMember, from, toFormField, gomFormElement, language);
 			}
@@ -79,8 +79,8 @@ public class FormFieldMapper {
 				if (!MAPPING_STRATEGY_SERVANT.matches(from, language, toAnnotatedMember, mappingStrategy)) {
 					continue;
 				}
-				final String fieldName = toAnnotatedMember.getFormFieldValue();
-				final FormField<?> fromFormField = from.get(language, fieldName);
+                final String fieldName = toAnnotatedMember.getFormField().value();
+                final FormField<?> fromFormField = from.get(language, fieldName);
 				final GomFormElement gomFormElement = FORM_DATA_SERVANT.getGomFormElement(from, fieldName);
 				mappingStrategy.map(fromFormField, gomFormElement, language, toAnnotatedMember, to);
 			}

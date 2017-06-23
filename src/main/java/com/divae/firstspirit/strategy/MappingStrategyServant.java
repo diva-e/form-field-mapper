@@ -18,9 +18,9 @@ public final class MappingStrategyServant {
 		notNull(language);
 		notNull(mappingStrategy);
 
-		String formFieldValue = from.getFormFieldValue();
-		if (formFieldValue == null) {
-			return false;
+        final com.divae.firstspirit.annotation.FormField formField = from.getFormField();
+        if (formField == null) {
+            return false;
 		}
 
 		Class<?> fromGetType = from.getGetType();
@@ -28,8 +28,8 @@ public final class MappingStrategyServant {
 			return false;
 		}
 
-		final FormField<?> toFormField = FORM_FIELD_SERVANT.getFormField(formFieldValue, to, language);
-		return toFormField != null && mappingStrategy.matches(fromGetType, toFormField.getType());
+        final FormField<?> toFormField = FORM_FIELD_SERVANT.getFormField(formField.value(), to, language);
+        return toFormField != null && mappingStrategy.matches(fromGetType, toFormField.getType());
 
 	}
 
@@ -39,9 +39,9 @@ public final class MappingStrategyServant {
 		notNull(to);
 		notNull(mappingStrategy);
 
-		String formFieldValue = to.getFormFieldValue();
-		if (formFieldValue == null) {
-			return false;
+        final com.divae.firstspirit.annotation.FormField formField = to.getFormField();
+        if (formField == null) {
+            return false;
 		}
 
 		Class<?> toSetType = to.getSetType();
@@ -49,8 +49,8 @@ public final class MappingStrategyServant {
 			return false;
 		}
 
-		final FormField<?> fromFormField = FORM_FIELD_SERVANT.getFormField(formFieldValue, from, language);
-		return fromFormField != null && mappingStrategy.matches(fromFormField.getType(), toSetType);
+        final FormField<?> fromFormField = FORM_FIELD_SERVANT.getFormField(formField.value(), from, language);
+        return fromFormField != null && mappingStrategy.matches(fromFormField.getType(), toSetType);
 
 	}
 }

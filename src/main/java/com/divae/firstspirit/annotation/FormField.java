@@ -9,5 +9,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface FormField {
 
-	String value();
+    String value();
+
+    boolean isEntityName() default false;
 }

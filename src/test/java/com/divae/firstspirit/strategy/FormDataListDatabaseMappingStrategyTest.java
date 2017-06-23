@@ -65,6 +65,7 @@ public class FormDataListDatabaseMappingStrategyTest {
     public void mapFieldOFormFieldGomFormElementLanguage() throws Exception {
         TestClass testClass = new TestClass();
         SecondTestClass secondTest = new SecondTestClass();
+        secondTest.fsId = 1L;
         secondTest.string = "test";
         testClass.singleObject = secondTest;
 
@@ -73,7 +74,7 @@ public class FormDataListDatabaseMappingStrategyTest {
 
         GomFormElementBuilder gomFormElementBuilder = gomFormElementWith("tt_single_object");
         TemplateStoreRootBuilder templateStoreRootBuilder = templateStoreRootWith(1, projectBuilder);
-        EntityBuilder entityBuilder = entityWith(randomUUID());
+        EntityBuilder entityBuilder = entityWith(randomUUID()).aValue("fs_id", 1);
         de.espirit.firstspirit.forms.FormField<FormDataList> formField = build(FormFieldMock.<FormDataList>formFieldWith().aValue(
                 build(formDataListWith().values(() ->
                         singletonList(idProvidingFormDataWith(6L).aValue(() ->
@@ -448,8 +449,8 @@ public class FormDataListDatabaseMappingStrategyTest {
     @Database(uid = "database")
     public static final class SecondTestClass {
 
-        @FormField("fs_id")
-        public String fsId;
+        @FormField(value = "fs_id", isEntityName = true)
+        public Long fsId;
 
         @FormField("st_string")
         public String string;

@@ -1,6 +1,7 @@
 package com.divae.firstspirit;
 
 import com.divae.firstspirit.annotation.DatabaseServant;
+import com.divae.firstspirit.annotation.FormField;
 import com.divae.firstspirit.annotation.FormFieldServant;
 
 import java.lang.reflect.AnnotatedElement;
@@ -196,8 +197,8 @@ public class AnnotatedMemberModule {
 
         public abstract Constructor<?> getSetDeclaredConstructor();
 
-        public String getFormFieldValue() {
-            return FORM_FIELD_SERVANT.getFormFieldValue(annotatedMember);
+        public FormField getFormField() {
+            return FORM_FIELD_SERVANT.getFormField(annotatedMember);
         }
     }
 }

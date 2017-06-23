@@ -1,5 +1,6 @@
 package com.divae.firstspirit.formdatalist;
 
+import com.divae.firstspirit.annotation.FormField;
 import de.espirit.firstspirit.access.Language;
 import de.espirit.firstspirit.access.ReferenceEntry;
 import de.espirit.firstspirit.access.editor.fslist.IdProvidingFormData;
@@ -44,7 +45,7 @@ public final class FormDataListServant {
         return sectionFormsProducer.create(sectionTemplate.get());
     }
 
-    public IdProvidingFormData createDatabaseIdProvidingFormData(final FormDataList formDataList, final String databaseUid, final Map<String, Object> columnValueMapping, final Language language) {
+    public IdProvidingFormData createDatabaseIdProvidingFormData(final FormDataList formDataList, final String databaseUid, final Map<FormField, Object> columnValueMapping, final Language language) {
         notNull(formDataList);
         notNull(databaseUid);
 
@@ -71,14 +72,19 @@ public final class FormDataListServant {
         return null;
     }
 
-    Entity findEntity(final Schema schema, final Mapping[] tableTemplateMappings, final Map<String, Object> columnValueMapping, final Language language) {
+    Entity findEntity(final Schema schema, final Mapping[] tableTemplateMappings, final Map<FormField, Object> columnValueMapping, final Language language) {
         final Session session = schema.getSession(true);
         final Select select = session.createSelect(schema.getName());
         final And and = new And();
         final String languageAbbreviation = language.getAbbreviation();
 
         columnValueMapping.entrySet().parallelStream().forEach(columnValue -> {
-            final String columnKey = columnValue.getKey();
+            final FormField formField = columnValue.getKey();
+            if (formField.isEntityName()) {
+                and.add(new Equal(formField.value(), columnValue.getValue()));
+                return;
+            }
+            final String columnKey = formField.value();
             final Optional<String> attributeNameOptional = of(tableTemplateMappings).parallel()
                     .filter(tableTemplateMapping -> tableTemplateMapping.getName().equals(columnKey))
                     .map(filteredTableTemplateMapping -> filteredTableTemplateMapping.getDBAttribute(languageAbbreviation).getName()).findFirst();

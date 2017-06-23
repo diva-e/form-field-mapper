@@ -95,8 +95,8 @@ public class FormDataListDatabaseMappingStrategy implements MappingStrategy {
     }
 
     <O> void map(final Collection<AnnotatedMember> fromAnnotatedMembers, final O object, final FormDataList formDataList, final String databaseUid, final Language language) {
-        final Map<String, Object> columnValueMapping = new HashMap<>();
-        fromAnnotatedMembers.parallelStream().filter(fromAnnotatedMember -> fromAnnotatedMember.getFormFieldValue() != null && fromAnnotatedMember.get(object) != null).forEach(fromAnnotatedMember -> columnValueMapping.put(fromAnnotatedMember.getFormFieldValue(), fromAnnotatedMember.get(object)));
+        final Map<com.divae.firstspirit.annotation.FormField, Object> columnValueMapping = new HashMap<>();
+        fromAnnotatedMembers.parallelStream().filter(fromAnnotatedMember -> fromAnnotatedMember.getFormField() != null && fromAnnotatedMember.get(object) != null).forEach(fromAnnotatedMember -> columnValueMapping.put(fromAnnotatedMember.getFormField(), fromAnnotatedMember.get(object)));
 
         final IdProvidingFormData idProvidingFormData = FORM_DATA_LIST_SERVANT.createDatabaseIdProvidingFormData(formDataList, databaseUid, columnValueMapping, language);
         if (idProvidingFormData == null) {
