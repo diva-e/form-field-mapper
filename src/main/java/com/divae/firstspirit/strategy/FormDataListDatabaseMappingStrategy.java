@@ -20,6 +20,8 @@ import java.util.Map;
 import static com.divae.firstspirit.AnnotatedMemberModule.getInstances;
 import static de.espirit.common.base.Logging.logWarning;
 import static java.util.Collections.singletonList;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Stream.concat;
 import static org.apache.commons.lang.Validate.notNull;
 
 public class FormDataListDatabaseMappingStrategy implements MappingStrategy {
@@ -89,13 +91,12 @@ public class FormDataListDatabaseMappingStrategy implements MappingStrategy {
     }
 
     <O> void map(final Class<?> objectClass, final O object, final FormDataList formDataList, final String databaseUid, final Language language) {
-        map(getInstances(objectClass.getDeclaredFields()), object, formDataList, databaseUid, language);
-        map(getInstances(objectClass.getDeclaredMethods()), object, formDataList, databaseUid, language);
+        map(concat(getInstances(objectClass.getDeclaredFields()).stream(), getInstances(objectClass.getDeclaredMethods()).stream()).collect(toList()), object, formDataList, databaseUid, language);
     }
 
     <O> void map(final Collection<AnnotatedMember> fromAnnotatedMembers, final O object, final FormDataList formDataList, final String databaseUid, final Language language) {
         final Map<String, Object> columnValueMapping = new HashMap<>();
-        fromAnnotatedMembers.parallelStream().filter(fromAnnotatedMember -> fromAnnotatedMember.getFormFieldValue() != null).forEach(fromAnnotatedMember -> columnValueMapping.put(fromAnnotatedMember.getFormFieldValue(), fromAnnotatedMember.get(object)));
+        fromAnnotatedMembers.parallelStream().filter(fromAnnotatedMember -> fromAnnotatedMember.getFormFieldValue() != null && fromAnnotatedMember.get(object) != null).forEach(fromAnnotatedMember -> columnValueMapping.put(fromAnnotatedMember.getFormFieldValue(), fromAnnotatedMember.get(object)));
 
         final IdProvidingFormData idProvidingFormData = FORM_DATA_LIST_SERVANT.createDatabaseIdProvidingFormData(formDataList, databaseUid, columnValueMapping, language);
         if (idProvidingFormData == null) {

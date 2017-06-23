@@ -45,7 +45,7 @@ public class AnnotatedMemberModule {
 
                 try {
                     return method.invoke(instance);
-                } catch (final IllegalAccessException | InvocationTargetException e) {
+                } catch (final IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
                     logWarning("Could not get data to [" + method.getName() + "]", e, getClass());
                 }
                 return null;
@@ -131,7 +131,7 @@ public class AnnotatedMemberModule {
 
                 try {
                     return field.get(instance);
-                } catch (final IllegalAccessException e) {
+                } catch (final IllegalAccessException | IllegalArgumentException e) {
                     logWarning("Could not get data to [" + field.getName() + "]", e, getClass());
                 }
                 return null;

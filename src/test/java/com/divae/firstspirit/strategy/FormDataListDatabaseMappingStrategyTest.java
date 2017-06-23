@@ -9,15 +9,17 @@ import com.divae.firstspirit.access.store.templatestore.gom.GomFormElementMock.G
 import com.divae.firstspirit.annotation.Database;
 import com.divae.firstspirit.annotation.FormField;
 import com.divae.firstspirit.forms.FormFieldMock;
+import com.divae.firstspirit.or.query.SelectMock;
 import com.divae.firstspirit.or.schema.EntityMock.EntityBuilder;
 import de.espirit.firstspirit.access.Language;
+import de.espirit.firstspirit.access.editor.fslist.IdProvidingFormData;
 import de.espirit.firstspirit.access.store.templatestore.gom.GomFormElement;
 import de.espirit.firstspirit.forms.FormDataList;
-import org.junit.Ignore;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.UUID;
+import java.util.Iterator;
 
 import static com.divae.firstspirit.AnnotatedMemberModule.getInstance;
 import static com.divae.firstspirit.BuilderMock.build;
@@ -35,11 +37,15 @@ import static com.divae.firstspirit.access.store.templatestore.TemplateStoreRoot
 import static com.divae.firstspirit.access.store.templatestore.gom.GomEditorProviderMock.gomEditorProviderWith;
 import static com.divae.firstspirit.access.store.templatestore.gom.GomFormElementMock.gomFormElementWith;
 import static com.divae.firstspirit.forms.FormDataListMock.formDataListWith;
+import static com.divae.firstspirit.forms.FormFieldMock.formFieldWith;
+import static com.divae.firstspirit.or.EntityListMock.entityListWith;
 import static com.divae.firstspirit.or.SessionMock.sessionWith;
+import static com.divae.firstspirit.or.schema.AttributeMock.attributeWith;
 import static com.divae.firstspirit.or.schema.EntityMock.entityWith;
 import static de.espirit.firstspirit.access.store.IDProvider.UidType.TEMPLATESTORE;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
+import static java.util.UUID.randomUUID;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -55,7 +61,6 @@ public class FormDataListDatabaseMappingStrategyTest {
         assertThat(formDataListDatabaseMappingStrategy.matches(SecondTestClass.class, FormDataList.class), is(true));
     }
 
-    @Ignore
     @Test
     public void mapFieldOFormFieldGomFormElementLanguage() throws Exception {
         TestClass testClass = new TestClass();
@@ -68,7 +73,7 @@ public class FormDataListDatabaseMappingStrategyTest {
 
         GomFormElementBuilder gomFormElementBuilder = gomFormElementWith("tt_single_object");
         TemplateStoreRootBuilder templateStoreRootBuilder = templateStoreRootWith(1, projectBuilder);
-        EntityBuilder entityBuilder = entityWith(UUID.randomUUID());
+        EntityBuilder entityBuilder = entityWith(randomUUID());
         de.espirit.firstspirit.forms.FormField<FormDataList> formField = build(FormFieldMock.<FormDataList>formFieldWith().aValue(
                 build(formDataListWith().values(() ->
                         singletonList(idProvidingFormDataWith(6L).aValue(() ->
@@ -86,10 +91,11 @@ public class FormDataListDatabaseMappingStrategyTest {
                                                         gomEditorProviderWith("test").values(() ->
                                                                 asList(gomFormElementWith("st_string"), gomFormElementWith("st_private_string")))), entityBuilder)
                                         .aTableTemplate(tableTemplateWith("tableTemplate", 3L, TEMPLATESTORE, templateStoreRootBuilder).mappings(() ->
-                                                new MappingMock.MappingBuilder[]{mappingWith()}, true)
+                                                new MappingMock.MappingBuilder[]{mappingWith().aName("st_string").aDBAttribute(() -> attributeWith().aName("string"), languageBuilder),
+                                                        mappingWith().aName("st_private_string").aDBAttribute(() -> attributeWith().aName("private_string"), languageBuilder)}, true)
                                                 .incomingReferences(() -> new ReferenceEntryBuilder[]{referenceEntryWith(4L).aReferencedElement(content2With("database", 5L, contentStoreRootWith(2, projectBuilder))
                                                         .aSchema(schemaWith("schema", 6L, templateStoreRootBuilder).aSession(() ->
-                                                                sessionWith(), true)))})))))
+                                                                sessionWith().aSelect(SelectMock::selectWith, "schema", build(entityListWith().values(singletonList(build(entityBuilder))))), true)))})))))
         );
         Language language = build(languageBuilder);
         GomFormElement gomFormElement = build(gomFormElementBuilder);
@@ -100,7 +106,7 @@ public class FormDataListDatabaseMappingStrategyTest {
         assertThat(formDataList.get(0).get(language, "st_string").get(), is("test"));
     }
 
-    /*@Test
+    @Test
     public void mapMethodOFormFieldGomFormElementLanguage() throws Exception {
         TestClass testClass = new TestClass();
         SecondTestClass secondTest = new SecondTestClass();
@@ -108,26 +114,33 @@ public class FormDataListDatabaseMappingStrategyTest {
         testClass.setPrivateSingleObject(secondTest);
 
         LanguageBuilder languageBuilder = languageWith("DE");
+        ProjectBuilder projectBuilder = projectWith("test", 0, languageBuilder);
 
         GomFormElementBuilder gomFormElementBuilder = gomFormElementWith("tt_private_single_object");
-        SectionTemplateBuilder sectionTemplateBuilder = sectionTemplateWith("st_template", 3, TEMPLATESTORE, sectionTemplatesWith("test", 2, templateStoreRootWith(1, projectWith("test", 0, languageBuilder))));
+        TemplateStoreRootBuilder templateStoreRootBuilder = templateStoreRootWith(1, projectBuilder);
+        EntityBuilder entityBuilder = entityWith(randomUUID());
         de.espirit.firstspirit.forms.FormField<FormDataList> formField = build(FormFieldMock.<FormDataList>formFieldWith().aValue(
                 build(formDataListWith().values(() ->
-                        singletonList(idProvidingFormDataWith(1L).aValue(() ->
+                        singletonList(idProvidingFormDataWith(6L).aValue(() ->
                                 FormFieldMock.<String>formFieldWith().aType(String.class), languageBuilder, "tt_private_single_object")
                                 .aForm(() ->
                                         gomEditorProviderWith("test").values(() ->
                                                 singletonList(gomFormElementBuilder)))))
                         .aProducer(() ->
-                                sectionFormsProducerWith().allowedTemplates(singletonList(sectionTemplateBuilder))
-                                        .creates(() ->
-                                                idProvidingFormDataWith(1L).aValue(() ->
-                                                        FormFieldMock.<String>formFieldWith().aType(String.class), languageBuilder, "st_string")
-                                                        .aValue(() ->
-                                                                FormFieldMock.<String>formFieldWith().aType(String.class), languageBuilder, "st_private_string")
-                                                        .aForm(() ->
-                                                                gomEditorProviderWith("test").values(() ->
-                                                                        asList(gomFormElementWith("st_string"), gomFormElementWith("st_private_string")))), sectionTemplateBuilder))))
+                                contentFormsProducerWith().creates(() ->
+                                        idProvidingFormDataWith(5L).aValue(() ->
+                                                FormFieldMock.<String>formFieldWith().aType(String.class), languageBuilder, "st_string")
+                                                .aValue(() ->
+                                                        FormFieldMock.<String>formFieldWith().aType(String.class), languageBuilder, "st_private_string")
+                                                .aForm(() ->
+                                                        gomEditorProviderWith("test").values(() ->
+                                                                asList(gomFormElementWith("st_string"), gomFormElementWith("st_private_string")))), entityBuilder)
+                                        .aTableTemplate(tableTemplateWith("tableTemplate", 3L, TEMPLATESTORE, templateStoreRootBuilder).mappings(() ->
+                                                new MappingMock.MappingBuilder[]{mappingWith().aName("st_string").aDBAttribute(() -> attributeWith().aName("string"), languageBuilder),
+                                                        mappingWith().aName("st_private_string").aDBAttribute(() -> attributeWith().aName("private_string"), languageBuilder)}, true)
+                                                .incomingReferences(() -> new ReferenceEntryBuilder[]{referenceEntryWith(4L).aReferencedElement(content2With("database", 5L, contentStoreRootWith(2, projectBuilder))
+                                                        .aSchema(schemaWith("schema", 6L, templateStoreRootBuilder).aSession(() ->
+                                                                sessionWith().aSelect(SelectMock::selectWith, "schema", build(entityListWith().values(singletonList(build(entityBuilder))))), true)))})))))
         );
         Language language = build(languageBuilder);
         GomFormElement gomFormElement = build(gomFormElementBuilder);
@@ -193,17 +206,25 @@ public class FormDataListDatabaseMappingStrategyTest {
         secondSecondTest.setPrivateString("privateString");
         secondTests.add(secondSecondTest);
 
-        SectionTemplateBuilder sectionTemplateBuilder = sectionTemplateWith("st_template", 3, TEMPLATESTORE, sectionTemplatesWith("test", 2, templateStoreRootWith(1, projectWith("test", 0, languageBuilder))));
+        ProjectBuilder projectBuilder = projectWith("test", 0, languageBuilder);
 
+        TemplateStoreRootBuilder templateStoreRootBuilder = templateStoreRootWith(1, projectBuilder);
+        EntityBuilder entityBuilder = entityWith(randomUUID());
         FormDataList formDataList = build(formDataListWith().aProducer(() ->
-                sectionFormsProducerWith().allowedTemplates(singletonList(sectionTemplateBuilder)).creates(() ->
-                        idProvidingFormDataWith(1L).aValue(() ->
+                contentFormsProducerWith().creates(() ->
+                        idProvidingFormDataWith(5L).aValue(() ->
                                 FormFieldMock.<String>formFieldWith().aType(String.class), languageBuilder, "st_string")
                                 .aValue(() ->
                                         FormFieldMock.<String>formFieldWith().aType(String.class), languageBuilder, "st_private_string")
                                 .aForm(() ->
                                         gomEditorProviderWith("test").values(() ->
-                                                asList(gomFormElementWith("st_string"), gomFormElementWith("st_private_string")))), sectionTemplateBuilder))
+                                                asList(gomFormElementWith("st_string"), gomFormElementWith("st_private_string")))), entityBuilder)
+                        .aTableTemplate(tableTemplateWith("tableTemplate", 3L, TEMPLATESTORE, templateStoreRootBuilder).mappings(() ->
+                                new MappingMock.MappingBuilder[]{mappingWith().aName("st_string").aDBAttribute(() -> attributeWith().aName("string"), languageBuilder),
+                                        mappingWith().aName("st_private_string").aDBAttribute(() -> attributeWith().aName("private_string"), languageBuilder)}, true)
+                                .incomingReferences(() -> new ReferenceEntryBuilder[]{referenceEntryWith(4L).aReferencedElement(content2With("database", 5L, contentStoreRootWith(2, projectBuilder))
+                                        .aSchema(schemaWith("schema", 6L, templateStoreRootBuilder).aSession(() ->
+                                                sessionWith().aSelect(SelectMock::selectWith, "schema", build(entityListWith().values(singletonList(build(entityBuilder))))), true)))})))
         );
         Language language = build(languageBuilder);
 
@@ -390,7 +411,7 @@ public class FormDataListDatabaseMappingStrategyTest {
         SecondTestClass secondSecondTest = iterator.next();
         assertThat(secondSecondTest.string, is("string2"));
         assertThat(secondSecondTest.getPrivateString(), is("privateString"));
-    }*/
+    }
 
     public static final class TestClass {
         @FormField("tt_objects")

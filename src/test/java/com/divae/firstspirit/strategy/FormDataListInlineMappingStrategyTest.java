@@ -1,13 +1,14 @@
 package com.divae.firstspirit.strategy;
 
 import com.divae.firstspirit.access.LanguageMock.LanguageBuilder;
-import com.divae.firstspirit.access.store.templatestore.SectionTemplateMock.SectionTemplateBuilder;
+import com.divae.firstspirit.access.store.templatestore.SectionTemplateMock.TruncatedSectionTemplateBuilder;
 import com.divae.firstspirit.access.store.templatestore.gom.GomFormElementMock.GomFormElementBuilder;
 import com.divae.firstspirit.annotation.FormField;
 import com.divae.firstspirit.annotation.Template;
 import com.divae.firstspirit.forms.FormFieldMock;
 import de.espirit.firstspirit.access.Language;
 import de.espirit.firstspirit.access.editor.fslist.IdProvidingFormData;
+import de.espirit.firstspirit.access.store.templatestore.SectionTemplate;
 import de.espirit.firstspirit.access.store.templatestore.gom.GomFormElement;
 import de.espirit.firstspirit.forms.FormDataList;
 import org.junit.Test;
@@ -57,8 +58,8 @@ public class FormDataListInlineMappingStrategyTest {
 		LanguageBuilder languageBuilder = languageWith("DE");
 
 		GomFormElementBuilder gomFormElementBuilder = gomFormElementWith("tt_single_object");
-		SectionTemplateBuilder sectionTemplateBuilder = sectionTemplateWith("st_template", 3, TEMPLATESTORE, sectionTemplatesWith("test", 2, templateStoreRootWith(1, projectWith("test", 0, languageBuilder))));
-		de.espirit.firstspirit.forms.FormField<FormDataList> formField = build(FormFieldMock.<FormDataList>formFieldWith().aValue(
+        TruncatedSectionTemplateBuilder<SectionTemplate> sectionTemplateBuilder = sectionTemplateWith("st_template", 3, TEMPLATESTORE, sectionTemplatesWith("test", 2, templateStoreRootWith(1, projectWith("test", 0, languageBuilder))));
+        de.espirit.firstspirit.forms.FormField<FormDataList> formField = build(FormFieldMock.<FormDataList>formFieldWith().aValue(
 				build(formDataListWith().values(() ->
 						singletonList(idProvidingFormDataWith(1L).aValue(() ->
 								FormFieldMock.<String>formFieldWith().aType(String.class), languageBuilder, "tt_single_object")
@@ -94,8 +95,8 @@ public class FormDataListInlineMappingStrategyTest {
 		LanguageBuilder languageBuilder = languageWith("DE");
 
 		GomFormElementBuilder gomFormElementBuilder = gomFormElementWith("tt_private_single_object");
-		SectionTemplateBuilder sectionTemplateBuilder = sectionTemplateWith("st_template", 3, TEMPLATESTORE, sectionTemplatesWith("test", 2, templateStoreRootWith(1, projectWith("test", 0, languageBuilder))));
-		de.espirit.firstspirit.forms.FormField<FormDataList> formField = build(FormFieldMock.<FormDataList>formFieldWith().aValue(
+        TruncatedSectionTemplateBuilder<SectionTemplate> sectionTemplateBuilder = sectionTemplateWith("st_template", 3, TEMPLATESTORE, sectionTemplatesWith("test", 2, templateStoreRootWith(1, projectWith("test", 0, languageBuilder))));
+        de.espirit.firstspirit.forms.FormField<FormDataList> formField = build(FormFieldMock.<FormDataList>formFieldWith().aValue(
 				build(formDataListWith().values(() ->
 						singletonList(idProvidingFormDataWith(1L).aValue(() ->
 								FormFieldMock.<String>formFieldWith().aType(String.class), languageBuilder, "tt_private_single_object")
@@ -103,16 +104,15 @@ public class FormDataListInlineMappingStrategyTest {
 										gomEditorProviderWith("test").values(() ->
 												singletonList(gomFormElementBuilder)))))
 						.aProducer(() ->
-								sectionFormsProducerWith().allowedTemplates(singletonList(sectionTemplateBuilder))
-										.creates(() ->
-												idProvidingFormDataWith(1L).aValue(() ->
-														FormFieldMock.<String>formFieldWith().aType(String.class), languageBuilder, "st_string")
-														.aValue(() ->
-																FormFieldMock.<String>formFieldWith().aType(String.class), languageBuilder, "st_private_string")
-														.aForm(() ->
-																gomEditorProviderWith("test").values(() ->
-																		asList(gomFormElementWith("st_string"), gomFormElementWith("st_private_string")))), sectionTemplateBuilder))))
-		);
+                                sectionFormsProducerWith().allowedTemplates(singletonList(sectionTemplateBuilder)).creates(() ->
+                                        idProvidingFormDataWith(1L).aValue(() ->
+                                                FormFieldMock.<String>formFieldWith().aType(String.class), languageBuilder, "st_string")
+                                                .aValue(() ->
+                                                        FormFieldMock.<String>formFieldWith().aType(String.class), languageBuilder, "st_private_string")
+                                                .aForm(() ->
+                                                        gomEditorProviderWith("test").values(() ->
+                                                                asList(gomFormElementWith("st_string"), gomFormElementWith("st_private_string")))), sectionTemplateBuilder))))
+        );
 		Language language = build(languageBuilder);
 		GomFormElement gomFormElement = build(gomFormElementBuilder);
 
@@ -177,7 +177,7 @@ public class FormDataListInlineMappingStrategyTest {
 		secondSecondTest.setPrivateString("privateString");
 		secondTests.add(secondSecondTest);
 
-		SectionTemplateBuilder sectionTemplateBuilder = sectionTemplateWith("st_template", 3, TEMPLATESTORE, sectionTemplatesWith("test", 2, templateStoreRootWith(1, projectWith("test", 0, languageBuilder))));
+        TruncatedSectionTemplateBuilder<SectionTemplate> sectionTemplateBuilder = sectionTemplateWith("st_template", 3, TEMPLATESTORE, sectionTemplatesWith("test", 2, templateStoreRootWith(1, projectWith("test", 0, languageBuilder))));
 
 		FormDataList formDataList = build(formDataListWith().aProducer(() ->
 				sectionFormsProducerWith().allowedTemplates(singletonList(sectionTemplateBuilder)).creates(() ->

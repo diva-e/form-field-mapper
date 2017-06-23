@@ -22,7 +22,6 @@ import de.espirit.or.schema.Entity;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 import static de.espirit.common.base.Logging.logWarning;
 import static java.util.stream.Stream.of;
@@ -77,11 +76,10 @@ public final class FormDataListServant {
         final Select select = session.createSelect(schema.getName());
         final And and = new And();
         final String languageAbbreviation = language.getAbbreviation();
-        final Stream<Mapping> tableTemplateMappingsStream = of(tableTemplateMappings);
 
         columnValueMapping.entrySet().parallelStream().forEach(columnValue -> {
             final String columnKey = columnValue.getKey();
-            final Optional<String> attributeNameOptional = tableTemplateMappingsStream.parallel()
+            final Optional<String> attributeNameOptional = of(tableTemplateMappings).parallel()
                     .filter(tableTemplateMapping -> tableTemplateMapping.getName().equals(columnKey))
                     .map(filteredTableTemplateMapping -> filteredTableTemplateMapping.getDBAttribute(languageAbbreviation).getName()).findFirst();
             attributeNameOptional.ifPresent(attributeName -> and.add(new Equal(attributeName, columnValue.getValue())));
