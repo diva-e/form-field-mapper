@@ -1,13 +1,14 @@
 package com.divae.firstspirit.strategy;
 
 import com.divae.firstspirit.access.LanguageMock.LanguageBuilder;
-import com.divae.firstspirit.access.store.templatestore.SectionTemplateMock.SectionTemplateBuilder;
+import com.divae.firstspirit.access.store.templatestore.SectionTemplateMock.TruncatedSectionTemplateBuilder;
 import com.divae.firstspirit.access.store.templatestore.gom.GomFormElementMock.GomFormElementBuilder;
 import com.divae.firstspirit.annotation.FormField;
 import com.divae.firstspirit.annotation.Template;
 import com.divae.firstspirit.forms.FormFieldMock;
 import de.espirit.firstspirit.access.Language;
 import de.espirit.firstspirit.access.editor.fslist.IdProvidingFormData;
+import de.espirit.firstspirit.access.store.templatestore.SectionTemplate;
 import de.espirit.firstspirit.access.store.templatestore.gom.GomFormElement;
 import de.espirit.firstspirit.forms.FormDataList;
 import org.junit.Test;
@@ -35,16 +36,16 @@ import static java.util.Collections.singletonList;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
-public class FormDataListMappingStrategyTest {
+public class FormDataListInlineMappingStrategyTest {
 
-	private final FormDataListMappingStrategy formDataListMappingStrategy = new FormDataListMappingStrategy();
+	private final FormDataListInlineMappingStrategy formDataListInlineMappingStrategy = new FormDataListInlineMappingStrategy();
 
 	@Test
 	public void matches() throws Exception {
-		assertThat(formDataListMappingStrategy.matches(FormDataList.class, Collection.class), is(true));
-		assertThat(formDataListMappingStrategy.matches(Collection.class, FormDataList.class), is(true));
-		assertThat(formDataListMappingStrategy.matches(FormDataList.class, SecondTestClass.class), is(true));
-		assertThat(formDataListMappingStrategy.matches(SecondTestClass.class, FormDataList.class), is(true));
+		assertThat(formDataListInlineMappingStrategy.matches(FormDataList.class, Collection.class), is(true));
+		assertThat(formDataListInlineMappingStrategy.matches(Collection.class, FormDataList.class), is(true));
+		assertThat(formDataListInlineMappingStrategy.matches(FormDataList.class, SecondTestClass.class), is(true));
+		assertThat(formDataListInlineMappingStrategy.matches(SecondTestClass.class, FormDataList.class), is(true));
 	}
 
 	@Test
@@ -57,8 +58,8 @@ public class FormDataListMappingStrategyTest {
 		LanguageBuilder languageBuilder = languageWith("DE");
 
 		GomFormElementBuilder gomFormElementBuilder = gomFormElementWith("tt_single_object");
-		SectionTemplateBuilder sectionTemplateBuilder = sectionTemplateWith("st_template", 3, TEMPLATESTORE, sectionTemplatesWith("test", 2, templateStoreRootWith(1, projectWith("test", 0, languageBuilder))));
-		de.espirit.firstspirit.forms.FormField<FormDataList> formField = build(FormFieldMock.<FormDataList>formFieldWith().aValue(
+        TruncatedSectionTemplateBuilder<SectionTemplate> sectionTemplateBuilder = sectionTemplateWith("st_template", 3, TEMPLATESTORE, sectionTemplatesWith("test", 2, templateStoreRootWith(1, projectWith("test", 0, languageBuilder))));
+        de.espirit.firstspirit.forms.FormField<FormDataList> formField = build(FormFieldMock.<FormDataList>formFieldWith().aValue(
 				build(formDataListWith().values(() ->
 						singletonList(idProvidingFormDataWith(1L).aValue(() ->
 								FormFieldMock.<String>formFieldWith().aType(String.class), languageBuilder, "tt_single_object")
@@ -78,7 +79,7 @@ public class FormDataListMappingStrategyTest {
 		Language language = build(languageBuilder);
 		GomFormElement gomFormElement = build(gomFormElementBuilder);
 
-		formDataListMappingStrategy.map(getInstance(testClass.getClass().getField("singleObject")), testClass, formField, gomFormElement, language);
+		formDataListInlineMappingStrategy.map(getInstance(testClass.getClass().getField("singleObject")), testClass, formField, gomFormElement, language);
 		FormDataList formDataList = formField.get();
 		assertThat(formDataList.size(), is(1));
 		assertThat(formDataList.get(0).get(language, "st_string").get(), is("test"));
@@ -94,8 +95,8 @@ public class FormDataListMappingStrategyTest {
 		LanguageBuilder languageBuilder = languageWith("DE");
 
 		GomFormElementBuilder gomFormElementBuilder = gomFormElementWith("tt_private_single_object");
-		SectionTemplateBuilder sectionTemplateBuilder = sectionTemplateWith("st_template", 3, TEMPLATESTORE, sectionTemplatesWith("test", 2, templateStoreRootWith(1, projectWith("test", 0, languageBuilder))));
-		de.espirit.firstspirit.forms.FormField<FormDataList> formField = build(FormFieldMock.<FormDataList>formFieldWith().aValue(
+        TruncatedSectionTemplateBuilder<SectionTemplate> sectionTemplateBuilder = sectionTemplateWith("st_template", 3, TEMPLATESTORE, sectionTemplatesWith("test", 2, templateStoreRootWith(1, projectWith("test", 0, languageBuilder))));
+        de.espirit.firstspirit.forms.FormField<FormDataList> formField = build(FormFieldMock.<FormDataList>formFieldWith().aValue(
 				build(formDataListWith().values(() ->
 						singletonList(idProvidingFormDataWith(1L).aValue(() ->
 								FormFieldMock.<String>formFieldWith().aType(String.class), languageBuilder, "tt_private_single_object")
@@ -103,20 +104,19 @@ public class FormDataListMappingStrategyTest {
 										gomEditorProviderWith("test").values(() ->
 												singletonList(gomFormElementBuilder)))))
 						.aProducer(() ->
-								sectionFormsProducerWith().allowedTemplates(singletonList(sectionTemplateBuilder))
-										.creates(() ->
-												idProvidingFormDataWith(1L).aValue(() ->
-														FormFieldMock.<String>formFieldWith().aType(String.class), languageBuilder, "st_string")
-														.aValue(() ->
-																FormFieldMock.<String>formFieldWith().aType(String.class), languageBuilder, "st_private_string")
-														.aForm(() ->
-																gomEditorProviderWith("test").values(() ->
-																		asList(gomFormElementWith("st_string"), gomFormElementWith("st_private_string")))), sectionTemplateBuilder))))
-		);
+                                sectionFormsProducerWith().allowedTemplates(singletonList(sectionTemplateBuilder)).creates(() ->
+                                        idProvidingFormDataWith(1L).aValue(() ->
+                                                FormFieldMock.<String>formFieldWith().aType(String.class), languageBuilder, "st_string")
+                                                .aValue(() ->
+                                                        FormFieldMock.<String>formFieldWith().aType(String.class), languageBuilder, "st_private_string")
+                                                .aForm(() ->
+                                                        gomEditorProviderWith("test").values(() ->
+                                                                asList(gomFormElementWith("st_string"), gomFormElementWith("st_private_string")))), sectionTemplateBuilder))))
+        );
 		Language language = build(languageBuilder);
 		GomFormElement gomFormElement = build(gomFormElementBuilder);
 
-		formDataListMappingStrategy.map(getInstance(testClass.getClass().getMethod("getPrivateSingleObject")), testClass, formField, gomFormElement, language);
+		formDataListInlineMappingStrategy.map(getInstance(testClass.getClass().getMethod("getPrivateSingleObject")), testClass, formField, gomFormElement, language);
 		FormDataList formDataList = formField.get();
 		assertThat(formDataList.size(), is(1));
 		assertThat(formDataList.get(0).get(language, "st_string").get(), is("test"));
@@ -137,7 +137,7 @@ public class FormDataListMappingStrategyTest {
 		Language language = build(languageBuilder);
 		TestClass testClass = new TestClass();
 
-		formDataListMappingStrategy.map(formField, gomFormElement, language, getInstance(testClass.getClass().getField("singleObject")), testClass);
+		formDataListInlineMappingStrategy.map(formField, gomFormElement, language, getInstance(testClass.getClass().getField("singleObject")), testClass);
 		assertThat(testClass.singleObject.string, is("test"));
 	}
 
@@ -158,7 +158,7 @@ public class FormDataListMappingStrategyTest {
 		Language language = build(languageBuilder);
 		TestClass testClass = new TestClass();
 
-		formDataListMappingStrategy.map(formField, gomFormElement, language, getInstance(testClass.getClass().getMethod("setPrivateSingleObject", SecondTestClass.class)), testClass);
+		formDataListInlineMappingStrategy.map(formField, gomFormElement, language, getInstance(testClass.getClass().getMethod("setPrivateSingleObject", SecondTestClass.class)), testClass);
 		assertThat(testClass.getPrivateSingleObject().string, is("test"));
 	}
 
@@ -177,7 +177,7 @@ public class FormDataListMappingStrategyTest {
 		secondSecondTest.setPrivateString("privateString");
 		secondTests.add(secondSecondTest);
 
-		SectionTemplateBuilder sectionTemplateBuilder = sectionTemplateWith("st_template", 3, TEMPLATESTORE, sectionTemplatesWith("test", 2, templateStoreRootWith(1, projectWith("test", 0, languageBuilder))));
+        TruncatedSectionTemplateBuilder<SectionTemplate> sectionTemplateBuilder = sectionTemplateWith("st_template", 3, TEMPLATESTORE, sectionTemplatesWith("test", 2, templateStoreRootWith(1, projectWith("test", 0, languageBuilder))));
 
 		FormDataList formDataList = build(formDataListWith().aProducer(() ->
 				sectionFormsProducerWith().allowedTemplates(singletonList(sectionTemplateBuilder)).creates(() ->
@@ -191,7 +191,7 @@ public class FormDataListMappingStrategyTest {
 		);
 		Language language = build(languageBuilder);
 
-		formDataListMappingStrategy.map(secondTests, formDataList, language);
+		formDataListInlineMappingStrategy.map(secondTests, formDataList, language);
 
 		assertThat(formDataList.size(), is(2));
 		assertThat(formDataList.get(0).get(language, "st_string").get(), is("string"));
@@ -213,7 +213,7 @@ public class FormDataListMappingStrategyTest {
 		);
 		Language language = build(languageBuilder);
 
-		SecondTestClass secondTest = formDataListMappingStrategy.map(providingFormData, language, SecondTestClass.class.getDeclaredConstructor());
+		SecondTestClass secondTest = formDataListInlineMappingStrategy.map(providingFormData, language, SecondTestClass.class.getDeclaredConstructor());
 
 		assertThat(secondTest.string, is("string"));
 		assertThat(secondTest.getPrivateString(), is("privateString"));
@@ -239,7 +239,7 @@ public class FormDataListMappingStrategyTest {
 		);
 		Language language = build(languageBuilder);
 
-		SecondTestClass secondTest = (SecondTestClass) formDataListMappingStrategy.map(formDataList, language, getInstance(TestClass.class.getField("singleObject")));
+		SecondTestClass secondTest = (SecondTestClass) formDataListInlineMappingStrategy.map(formDataList, language, getInstance(TestClass.class.getField("singleObject")));
 		assertThat(secondTest.string, is("string"));
 		assertThat(secondTest.getPrivateString(), is("privateString"));
 	}
@@ -265,7 +265,7 @@ public class FormDataListMappingStrategyTest {
 		Language language = build(languageBuilder);
 
 		@SuppressWarnings("unchecked")
-		Collection<Object> objects = (Collection<Object>) formDataListMappingStrategy.map(formDataList, language, getInstance(TestClass.class.getField("objects")));
+		Collection<Object> objects = (Collection<Object>) formDataListInlineMappingStrategy.map(formDataList, language, getInstance(TestClass.class.getField("objects")));
 
 		assertThat(objects.size(), is(2));
 
@@ -299,7 +299,7 @@ public class FormDataListMappingStrategyTest {
 		);
 		Language language = build(languageBuilder);
 
-		SecondTestClass secondTest = (SecondTestClass) formDataListMappingStrategy.map(formDataList, language, getInstance(TestClass.class.getMethod("setPrivateSingleObject", SecondTestClass.class)));
+		SecondTestClass secondTest = (SecondTestClass) formDataListInlineMappingStrategy.map(formDataList, language, getInstance(TestClass.class.getMethod("setPrivateSingleObject", SecondTestClass.class)));
 		assertThat(secondTest.string, is("string"));
 		assertThat(secondTest.getPrivateString(), is("privateString"));
 
@@ -327,7 +327,7 @@ public class FormDataListMappingStrategyTest {
 		Language language = build(languageBuilder);
 
 		@SuppressWarnings("unchecked")
-		Collection<Object> objects = (Collection<Object>) formDataListMappingStrategy.map(formDataList, language, getInstance(TestClass.class.getMethod("setPrivateObjects", Collection.class)));
+		Collection<Object> objects = (Collection<Object>) formDataListInlineMappingStrategy.map(formDataList, language, getInstance(TestClass.class.getMethod("setPrivateObjects", Collection.class)));
 
 		assertThat(objects.size(), is(2));
 
@@ -362,7 +362,7 @@ public class FormDataListMappingStrategyTest {
 		);
 		Language language = build(languageBuilder);
 
-		Collection<SecondTestClass> secondTests = formDataListMappingStrategy.map(formDataList, language, SecondTestClass.class.getDeclaredConstructor());
+		Collection<SecondTestClass> secondTests = formDataListInlineMappingStrategy.map(formDataList, language, SecondTestClass.class.getDeclaredConstructor());
 
 		assertThat(secondTests.size(), is(2));
 

@@ -5,7 +5,8 @@ import com.divae.firstspirit.formdata.FormDataServant;
 import com.divae.firstspirit.strategy.BooleanMappingStrategy;
 import com.divae.firstspirit.strategy.DateMappingStrategy;
 import com.divae.firstspirit.strategy.DomElementMappingStrategy;
-import com.divae.firstspirit.strategy.FormDataListMappingStrategy;
+import com.divae.firstspirit.strategy.FormDataListDatabaseMappingStrategy;
+import com.divae.firstspirit.strategy.FormDataListInlineMappingStrategy;
 import com.divae.firstspirit.strategy.MappingStrategy;
 import com.divae.firstspirit.strategy.MappingStrategyServant;
 import com.divae.firstspirit.strategy.NumberMappingStrategy;
@@ -29,7 +30,7 @@ public class FormFieldMapper {
 	private final List<MappingStrategy> mappingStrategies = asList(new BooleanMappingStrategy(),
 			new DateMappingStrategy(), new DomElementMappingStrategy(), new NumberMappingStrategy(),
 			new StringMappingStrategy(), new OptionsMappingStrategy(), new OptionMappingStrategy(),
-			new FormDataListMappingStrategy());
+            new FormDataListInlineMappingStrategy(), new FormDataListDatabaseMappingStrategy());
 
 	private static final MappingStrategyServant MAPPING_STRATEGY_SERVANT = new MappingStrategyServant();
 	private static final FormDataServant FORM_DATA_SERVANT = new FormDataServant();
@@ -49,8 +50,8 @@ public class FormFieldMapper {
 				if (!MAPPING_STRATEGY_SERVANT.matches(fromAnnotatedMember, to, language, mappingStrategy)) {
 					continue;
 				}
-				final String fieldName = fromAnnotatedMember.getFormFieldValue();
-				final FormField<?> toFormField = to.get(language, fieldName);
+                final String fieldName = fromAnnotatedMember.getFormField().value();
+                final FormField<?> toFormField = to.get(language, fieldName);
 				final GomFormElement gomFormElement = FORM_DATA_SERVANT.getGomFormElement(to, fieldName);
 				mappingStrategy.map(fromAnnotatedMember, from, toFormField, gomFormElement, language);
 			}
@@ -78,8 +79,8 @@ public class FormFieldMapper {
 				if (!MAPPING_STRATEGY_SERVANT.matches(from, language, toAnnotatedMember, mappingStrategy)) {
 					continue;
 				}
-				final String fieldName = toAnnotatedMember.getFormFieldValue();
-				final FormField<?> fromFormField = from.get(language, fieldName);
+                final String fieldName = toAnnotatedMember.getFormField().value();
+                final FormField<?> fromFormField = from.get(language, fieldName);
 				final GomFormElement gomFormElement = FORM_DATA_SERVANT.getGomFormElement(from, fieldName);
 				mappingStrategy.map(fromFormField, gomFormElement, language, toAnnotatedMember, to);
 			}

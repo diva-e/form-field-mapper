@@ -6,7 +6,7 @@
 
 	<groupId>com.diva-e.firstspirit</groupId>
 	<artifactId>form-field-mapper</artifactId>
-	<version>1.0.1</version>
+	<version>1.0.2</version>
 
 	<name>FirstSpirit Form Field Mapper</name>
 	<description>Project for mapping java field values into FirstSpirit Fields via annotations and vise versa.</description>
@@ -81,7 +81,7 @@
 		<dependency>
 			<groupId>com.diva-e.firstspirit</groupId>
 			<artifactId>firstspirit-mocks</artifactId>
-			<version>1.0.0</version>
+			<version>1.0.1</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>

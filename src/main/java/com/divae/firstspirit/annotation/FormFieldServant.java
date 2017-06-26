@@ -20,11 +20,11 @@ public final class FormFieldServant {
 		return FORM_DATA_SERVANT.getFormField(formData, formField, language);
 	}
 
-	public String getFormFieldValue(final AnnotatedElement annotatedElement) {
+	public com.divae.firstspirit.annotation.FormField getFormField(final AnnotatedElement annotatedElement) {
 		notNull(annotatedElement);
 
 		final com.divae.firstspirit.annotation.FormField formFieldAnnotation = getFormFieldAnnotation(annotatedElement);
-		return formFieldAnnotation != null ? formFieldAnnotation.value() : null;
+		return formFieldAnnotation != null ? formFieldAnnotation : null;
 	}
 
 	com.divae.firstspirit.annotation.FormField getFormFieldAnnotation(final AnnotatedElement annotatedElement){
