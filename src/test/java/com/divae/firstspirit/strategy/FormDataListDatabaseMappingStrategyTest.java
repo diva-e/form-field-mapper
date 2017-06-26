@@ -446,7 +446,7 @@ public class FormDataListDatabaseMappingStrategyTest {
         }
     }
 
-    @Database(uid = "database")
+    @Database("database")
     public static final class SecondTestClass {
 
         @FormField(value = "fs_id", isEntityName = true)

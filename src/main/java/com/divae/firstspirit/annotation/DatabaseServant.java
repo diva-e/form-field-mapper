@@ -10,28 +10,28 @@ public final class DatabaseServant {
         notNull(accessibleObject);
 
         final Database formFieldAnnotation = getDatabaseAnnotation(accessibleObject);
-        return formFieldAnnotation != null ? formFieldAnnotation.uid() : null;
+        return formFieldAnnotation != null ? formFieldAnnotation.value() : null;
     }
 
     public <T> String getDatabase(final Class<T> clazz) {
         notNull(clazz);
 
         final Database formFieldAnnotation = getDatabaseAnnotation(clazz);
-        return formFieldAnnotation != null ? formFieldAnnotation.uid() : null;
+        return formFieldAnnotation != null ? formFieldAnnotation.value() : null;
     }
 
     public String getDatabaseUid(final AccessibleObject accessibleObject) {
         notNull(accessibleObject);
 
         final Database formFieldAnnotation = getDatabaseAnnotation(accessibleObject);
-        return formFieldAnnotation != null ? formFieldAnnotation.uid() : null;
+        return formFieldAnnotation != null ? formFieldAnnotation.value() : null;
     }
 
     public <T> String getDatabaseUid(final Class<T> clazz) {
         notNull(clazz);
 
         final Database formFieldAnnotation = getDatabaseAnnotation(clazz);
-        return formFieldAnnotation != null ? formFieldAnnotation.uid() : null;
+        return formFieldAnnotation != null ? formFieldAnnotation.value() : null;
     }
 
     public <T> boolean hasDatabase(final Class<T> clazz) {
