@@ -58,7 +58,7 @@ public final class FormDataListServant {
             return null;
         }
 
-        return contentFormsProducer.create(findEntity(database.getSchema(), tableTemplateMappings, columnValueMapping, language));
+        return contentFormsProducer.create(findEntity(database.getSchema(), database.getEntityType().getName(), tableTemplateMappings, columnValueMapping, language));
     }
 
     Content2 getDatabase(final TableTemplate tableTemplate, final String databaseUid) {
@@ -72,9 +72,9 @@ public final class FormDataListServant {
         return null;
     }
 
-    Entity findEntity(final Schema schema, final Mapping[] tableTemplateMappings, final Map<FormField, Object> columnValueMapping, final Language language) {
+    Entity findEntity(final Schema schema, final String entityTypeName, final Mapping[] tableTemplateMappings, final Map<FormField, Object> columnValueMapping, final Language language) {
         final Session session = schema.getSession(true);
-        final Select select = session.createSelect(schema.getName());
+        final Select select = session.createSelect(entityTypeName);
         final And and = new And();
         final String languageAbbreviation = language.getAbbreviation();
 
@@ -94,6 +94,7 @@ public final class FormDataListServant {
         select.setConstraint(and);
         final EntityList entityList = session.executeQuery(select);
         if (entityList.isEmpty()) {
+            logWarning("Could not entity with constraint [" + and + "]", getClass());
             return null;
         }
 

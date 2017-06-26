@@ -95,8 +95,8 @@ public class FormDataListDatabaseMappingStrategyTest {
                                                 new MappingMock.MappingBuilder[]{mappingWith().aName("st_string").aDBAttribute(() -> attributeWith().aName("string"), languageBuilder),
                                                         mappingWith().aName("st_private_string").aDBAttribute(() -> attributeWith().aName("private_string"), languageBuilder)}, true)
                                                 .incomingReferences(() -> new ReferenceEntryBuilder[]{referenceEntryWith(4L).aReferencedElement(content2With("database", 5L, contentStoreRootWith(2, projectBuilder))
-                                                        .aSchema(schemaWith("schema", 6L, templateStoreRootBuilder).aSession(() ->
-                                                                sessionWith().aSelect(SelectMock::selectWith, "schema", build(entityListWith().values(singletonList(build(entityBuilder))))), true)))})))))
+                                                        .anEntityTypeName("database").aSchema(schemaWith("schema", 6L, templateStoreRootBuilder).aSession(() ->
+                                                                sessionWith().aSelect(SelectMock::selectWith, "database", build(entityListWith().values(singletonList(build(entityBuilder))))), true)))})))))
         );
         Language language = build(languageBuilder);
         GomFormElement gomFormElement = build(gomFormElementBuilder);
@@ -140,8 +140,8 @@ public class FormDataListDatabaseMappingStrategyTest {
                                                 new MappingMock.MappingBuilder[]{mappingWith().aName("st_string").aDBAttribute(() -> attributeWith().aName("string"), languageBuilder),
                                                         mappingWith().aName("st_private_string").aDBAttribute(() -> attributeWith().aName("private_string"), languageBuilder)}, true)
                                                 .incomingReferences(() -> new ReferenceEntryBuilder[]{referenceEntryWith(4L).aReferencedElement(content2With("database", 5L, contentStoreRootWith(2, projectBuilder))
-                                                        .aSchema(schemaWith("schema", 6L, templateStoreRootBuilder).aSession(() ->
-                                                                sessionWith().aSelect(SelectMock::selectWith, "schema", build(entityListWith().values(singletonList(build(entityBuilder))))), true)))})))))
+                                                        .anEntityTypeName("database").aSchema(schemaWith("schema", 6L, templateStoreRootBuilder).aSession(() ->
+                                                                sessionWith().aSelect(SelectMock::selectWith, "database", build(entityListWith().values(singletonList(build(entityBuilder))))), true)))})))))
         );
         Language language = build(languageBuilder);
         GomFormElement gomFormElement = build(gomFormElementBuilder);
@@ -224,8 +224,8 @@ public class FormDataListDatabaseMappingStrategyTest {
                                 new MappingMock.MappingBuilder[]{mappingWith().aName("st_string").aDBAttribute(() -> attributeWith().aName("string"), languageBuilder),
                                         mappingWith().aName("st_private_string").aDBAttribute(() -> attributeWith().aName("private_string"), languageBuilder)}, true)
                                 .incomingReferences(() -> new ReferenceEntryBuilder[]{referenceEntryWith(4L).aReferencedElement(content2With("database", 5L, contentStoreRootWith(2, projectBuilder))
-                                        .aSchema(schemaWith("schema", 6L, templateStoreRootBuilder).aSession(() ->
-                                                sessionWith().aSelect(SelectMock::selectWith, "schema", build(entityListWith().values(singletonList(build(entityBuilder))))), true)))})))
+                                        .anEntityTypeName("database").aSchema(schemaWith("schema", 6L, templateStoreRootBuilder).aSession(() ->
+                                                sessionWith().aSelect(SelectMock::selectWith, "database", build(entityListWith().values(singletonList(build(entityBuilder))))), true)))})))
         );
         Language language = build(languageBuilder);
 
