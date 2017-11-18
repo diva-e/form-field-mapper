@@ -8,11 +8,14 @@ import de.espirit.firstspirit.access.editor.value.OptionFactory;
 import de.espirit.firstspirit.access.editor.value.OptionFactoryProvider;
 import de.espirit.firstspirit.access.store.templatestore.gom.GomFormElement;
 import de.espirit.firstspirit.forms.FormField;
+import de.espirit.or.schema.Entity;
 
 import java.util.Collection;
 import java.util.Set;
 
 import static java.util.stream.Collectors.toSet;
+import static org.apache.commons.lang.Validate.allElementsOfType;
+import static org.apache.commons.lang.Validate.isTrue;
 import static org.apache.commons.lang.Validate.notNull;
 
 public class OptionsMappingStrategy implements MappingStrategy {
@@ -35,12 +38,21 @@ public class OptionsMappingStrategy implements MappingStrategy {
 		notNull(to);
 		notNull(toGomFormElement);
 
-		final FormField<Set<Option>> formField = (FormField<Set<Option>>) to;
-		final Set<Option> options = formField.get();
-		options.clear();
+        final FormField<Set<?>> formField = (FormField<Set<?>>) to;
+        final Set<?> set = formField.get();
+        allElementsOfType(set, Option.class);
+
+        final Set<Option> options = (Set<Option>) set;
+        options.clear();
+
+        final Collection<Object> objects = (Collection) from.get(fromObject);
+        if (!objects.isEmpty()) {
+            final Object first = objects.iterator().next();
+            isTrue(first instanceof String || first instanceof Entity);
+        }
 
 		final OptionFactory optionFactory = ((OptionFactoryProvider) toGomFormElement).getOptionFactory();
-		options.addAll(((Collection<String>) from.get(fromObject)).stream().map(optionFactory::create).collect(toSet()));
+        options.addAll(objects.stream().map(optionFactory::create).collect(toSet()));
 
 		formField.set(options);
 	}
@@ -52,6 +64,17 @@ public class OptionsMappingStrategy implements MappingStrategy {
 		notNull(to);
 		notNull(toObject);
 
-		to.set(toObject, optionServant.getValues(((FormField<Set<Option>>) from).get()));
-	}
+        final FormField<Set<?>> formField = (FormField<Set<?>>) from;
+        final Set<?> set = formField.get();
+        allElementsOfType(set, Option.class);
+
+        final Set<Option> options = (Set<Option>) set;
+        final Collection<Object> values = optionServant.getValues(options);
+        if (!values.isEmpty()) {
+            final Object first = values.iterator().next();
+            isTrue(first instanceof String || first instanceof Entity);
+        }
+
+        to.set(toObject, values);
+    }
 }

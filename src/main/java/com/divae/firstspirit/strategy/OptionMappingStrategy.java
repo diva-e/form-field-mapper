@@ -7,6 +7,7 @@ import de.espirit.firstspirit.access.editor.value.OptionFactory;
 import de.espirit.firstspirit.access.editor.value.OptionFactoryProvider;
 import de.espirit.firstspirit.access.store.templatestore.gom.GomFormElement;
 import de.espirit.firstspirit.forms.FormField;
+import de.espirit.or.schema.Entity;
 
 import static org.apache.commons.lang.Validate.notNull;
 
@@ -17,8 +18,10 @@ public class OptionMappingStrategy implements MappingStrategy {
 		notNull(toType);
 
 		return Option.class.isAssignableFrom(fromType) && String.class.isAssignableFrom(toType)
-				|| String.class.isAssignableFrom(fromType) && Option.class.isAssignableFrom(toType);
-	}
+                || String.class.isAssignableFrom(fromType) && Option.class.isAssignableFrom(toType)
+                || Option.class.isAssignableFrom(fromType) && Entity.class.isAssignableFrom(toType)
+                || Entity.class.isAssignableFrom(fromType) && Option.class.isAssignableFrom(toType);
+    }
 
 	@SuppressWarnings("unchecked")
 	@Override
