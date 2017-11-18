@@ -17,6 +17,7 @@ import static com.divae.firstspirit.access.editor.value.OptionFactoryMock.option
 import static com.divae.firstspirit.access.editor.value.OptionFactoryProviderMock.optionFactoryProviderWith;
 import static com.divae.firstspirit.access.editor.value.OptionMock.optionWith;
 import static com.divae.firstspirit.access.store.templatestore.gom.GomFormElementMock.gomFormElementWith;
+import static com.divae.firstspirit.agency.SpecialistsBrokerMock.specialistsBrokerWith;
 import static com.divae.firstspirit.or.schema.EntityMock.entityWith;
 import static java.util.UUID.randomUUID;
 import static org.hamcrest.Matchers.is;
@@ -42,7 +43,7 @@ public class OptionMappingStrategyTest {
 		GomFormElement proxy = proxy(with(object, OptionFactoryProvider.class).aTarget(GomFormElement.class));
 
 		de.espirit.firstspirit.forms.FormField<Option> formField = build(FormFieldMock.<Option>formFieldWith().aType(Option.class));
-		optionMappingStrategy.map(getInstance(test.getClass().getField("option")), test, formField, proxy, build(languageWith("DE")));
+		optionMappingStrategy.map(getInstance(test.getClass().getField("option")), test, formField, proxy, build(languageWith("DE")), build(specialistsBrokerWith()));
 
 		assertThat(formField.get().getValue(), is("option"));
 	}
@@ -59,7 +60,7 @@ public class OptionMappingStrategyTest {
 		GomFormElement proxy = proxy(with(object, OptionFactoryProvider.class).aTarget(GomFormElement.class));
 
 		de.espirit.firstspirit.forms.FormField<Option> formField = build(FormFieldMock.<Option>formFieldWith().aType(Option.class));
-		optionMappingStrategy.map(getInstance(test.getClass().getField("entityOption")), test, formField, proxy, build(languageWith("DE")));
+		optionMappingStrategy.map(getInstance(test.getClass().getField("entityOption")), test, formField, proxy, build(languageWith("DE")), build(specialistsBrokerWith()));
 
 		assertThat(formField.get().getValue(), is(entity));
 	}
@@ -73,7 +74,7 @@ public class OptionMappingStrategyTest {
 				.create(optionWith().aValue("option"), "option"))), OptionFactoryProvider.class).aTarget(GomFormElement.class));
 
 		de.espirit.firstspirit.forms.FormField<Option> formField = build(FormFieldMock.<Option>formFieldWith().aType(Option.class));
-		optionMappingStrategy.map(getInstance(test.getClass().getMethod("getPrivateOption")), test, formField, proxy, build(languageWith("DE")));
+		optionMappingStrategy.map(getInstance(test.getClass().getMethod("getPrivateOption")), test, formField, proxy, build(languageWith("DE")), build(specialistsBrokerWith()));
 
 		assertThat(formField.get().getValue(), is("option"));
 	}
@@ -89,7 +90,7 @@ public class OptionMappingStrategyTest {
 				.create(optionWith().aValue(entity), entity))), OptionFactoryProvider.class).aTarget(GomFormElement.class));
 
 		de.espirit.firstspirit.forms.FormField<Option> formField = build(FormFieldMock.<Option>formFieldWith().aType(Option.class));
-		optionMappingStrategy.map(getInstance(test.getClass().getMethod("getPrivateEntityOption")), test, formField, proxy, build(languageWith("DE")));
+		optionMappingStrategy.map(getInstance(test.getClass().getMethod("getPrivateEntityOption")), test, formField, proxy, build(languageWith("DE")), build(specialistsBrokerWith()));
 
 		assertThat(formField.get().getValue(), is(entity));
 	}
@@ -99,7 +100,7 @@ public class OptionMappingStrategyTest {
 		TestClass test = new TestClass();
 
 		de.espirit.firstspirit.forms.FormField<Option> formField = build(FormFieldMock.<Option>formFieldWith().aValue(build(optionWith().aValue("option"))));
-		optionMappingStrategy.map(formField, build(gomFormElementWith("test")), build(languageWith("DE")), getInstance(test.getClass().getField("option")), test);
+		optionMappingStrategy.map(formField, build(gomFormElementWith("test")), build(languageWith("DE")), build(specialistsBrokerWith()), getInstance(test.getClass().getField("option")), test);
 
 		assertThat(test.option, is("option"));
 	}
@@ -111,7 +112,7 @@ public class OptionMappingStrategyTest {
 		TestClass test = new TestClass();
 
 		de.espirit.firstspirit.forms.FormField<Option> formField = build(FormFieldMock.<Option>formFieldWith().aValue(build(optionWith().aValue(entity))));
-		optionMappingStrategy.map(formField, build(gomFormElementWith("test")), build(languageWith("DE")), getInstance(test.getClass().getField("entityOption")), test);
+		optionMappingStrategy.map(formField, build(gomFormElementWith("test")), build(languageWith("DE")), build(specialistsBrokerWith()), getInstance(test.getClass().getField("entityOption")), test);
 
 		assertThat(test.entityOption, is(entity));
 	}
@@ -121,7 +122,7 @@ public class OptionMappingStrategyTest {
 		TestClass test = new TestClass();
 
 		de.espirit.firstspirit.forms.FormField<Option> formField = build(FormFieldMock.<Option>formFieldWith().aValue(build(optionWith().aValue("option"))));
-		optionMappingStrategy.map(formField, build(gomFormElementWith("test")), build(languageWith("DE")), getInstance(test.getClass().getMethod("setPrivateOption", String.class)), test);
+		optionMappingStrategy.map(formField, build(gomFormElementWith("test")), build(languageWith("DE")), build(specialistsBrokerWith()), getInstance(test.getClass().getMethod("setPrivateOption", String.class)), test);
 
 		assertThat(test.getPrivateOption(), is("option"));
 	}
@@ -133,7 +134,7 @@ public class OptionMappingStrategyTest {
 		TestClass test = new TestClass();
 
 		de.espirit.firstspirit.forms.FormField<Option> formField = build(FormFieldMock.<Option>formFieldWith().aValue(build(optionWith().aValue(entity))));
-		optionMappingStrategy.map(formField, build(gomFormElementWith("test")), build(languageWith("DE")), getInstance(test.getClass().getMethod("setPrivateEntityOption", Entity.class)), test);
+		optionMappingStrategy.map(formField, build(gomFormElementWith("test")), build(languageWith("DE")), build(specialistsBrokerWith()), getInstance(test.getClass().getMethod("setPrivateEntityOption", Entity.class)), test);
 
 		assertThat(test.getPrivateEntityOption(), is(entity));
 	}

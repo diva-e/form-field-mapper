@@ -21,6 +21,7 @@ import static com.divae.firstspirit.access.editor.value.OptionFactoryMock.option
 import static com.divae.firstspirit.access.editor.value.OptionFactoryProviderMock.optionFactoryProviderWith;
 import static com.divae.firstspirit.access.editor.value.OptionMock.optionWith;
 import static com.divae.firstspirit.access.store.templatestore.gom.GomFormElementMock.gomFormElementWith;
+import static com.divae.firstspirit.agency.SpecialistsBrokerMock.specialistsBrokerWith;
 import static com.divae.firstspirit.or.schema.EntityMock.entityWith;
 import static java.util.UUID.randomUUID;
 import static org.hamcrest.Matchers.is;
@@ -49,7 +50,7 @@ public class OptionsMappingStrategyTest {
 		GomFormElement proxy = proxy(with(object, OptionFactoryProvider.class).aTarget(GomFormElement.class));
 
 		de.espirit.firstspirit.forms.FormField<Set<Option>> formField = build(FormFieldMock.<Set<Option>>formFieldWith().aValue(new HashSet<>()));
-		optionsMappingStrategy.map(getInstance(test.getClass().getField("options")), test, formField, proxy, build(languageWith("DE")));
+		optionsMappingStrategy.map(getInstance(test.getClass().getField("options")), test, formField, proxy, build(languageWith("DE")), build(specialistsBrokerWith()));
 
 		Set<Option> createdOptions = formField.get();
 		assertThat(createdOptions.size(), is(2));
@@ -75,7 +76,7 @@ public class OptionsMappingStrategyTest {
 		GomFormElement proxy = proxy(with(object, OptionFactoryProvider.class).aTarget(GomFormElement.class));
 
 		de.espirit.firstspirit.forms.FormField<Set<Option>> formField = build(FormFieldMock.<Set<Option>>formFieldWith().aValue(new HashSet<>()));
-		optionsMappingStrategy.map(getInstance(test.getClass().getField("entityOptions")), test, formField, proxy, build(languageWith("DE")));
+		optionsMappingStrategy.map(getInstance(test.getClass().getField("entityOptions")), test, formField, proxy, build(languageWith("DE")), build(specialistsBrokerWith()));
 
 		Set<Option> createdOptions = formField.get();
 		assertThat(createdOptions.size(), is(2));
@@ -98,7 +99,7 @@ public class OptionsMappingStrategyTest {
 
 		de.espirit.firstspirit.forms.FormField<Set<Option>> formField = build(FormFieldMock.<Set<Option>>formFieldWith().aValue(new HashSet<>()));
 
-		optionsMappingStrategy.map(getInstance(test.getClass().getMethod("getPrivateOptions")), test, formField, proxy, build(languageWith("DE")));
+		optionsMappingStrategy.map(getInstance(test.getClass().getMethod("getPrivateOptions")), test, formField, proxy, build(languageWith("DE")), build(specialistsBrokerWith()));
 
 		Set<Option> createdOptions = formField.get();
 		assertThat(createdOptions.size(), is(2));
@@ -124,7 +125,7 @@ public class OptionsMappingStrategyTest {
 
 		de.espirit.firstspirit.forms.FormField<Set<Option>> formField = build(FormFieldMock.<Set<Option>>formFieldWith().aValue(new HashSet<>()));
 
-		optionsMappingStrategy.map(getInstance(test.getClass().getMethod("getPrivateEntityOptions")), test, formField, proxy, build(languageWith("DE")));
+		optionsMappingStrategy.map(getInstance(test.getClass().getMethod("getPrivateEntityOptions")), test, formField, proxy, build(languageWith("DE")), build(specialistsBrokerWith()));
 
 		Set<Option> createdOptions = formField.get();
 		assertThat(createdOptions.size(), is(2));
@@ -142,7 +143,7 @@ public class OptionsMappingStrategyTest {
 		options.add(build(optionWith().aValue("option2")));
 
 		de.espirit.firstspirit.forms.FormField<Set<Option>> formField = build(FormFieldMock.<Set<Option>>formFieldWith().aValue(options));
-		optionsMappingStrategy.map(formField, build(gomFormElementWith("test")), build(languageWith("DE")), getInstance(test.getClass().getField("options")), test);
+		optionsMappingStrategy.map(formField, build(gomFormElementWith("test")), build(languageWith("DE")), build(specialistsBrokerWith()), getInstance(test.getClass().getField("options")), test);
 
 		assertThat(test.options.size(), is(2));
 		assertThat(test.options.contains("option"), is(true));
@@ -161,7 +162,7 @@ public class OptionsMappingStrategyTest {
 		options.add(build(optionWith().aValue(entity2)));
 
 		de.espirit.firstspirit.forms.FormField<Set<Option>> formField = build(FormFieldMock.<Set<Option>>formFieldWith().aValue(options));
-		optionsMappingStrategy.map(formField, build(gomFormElementWith("test")), build(languageWith("DE")), getInstance(test.getClass().getField("entityOptions")), test);
+		optionsMappingStrategy.map(formField, build(gomFormElementWith("test")), build(languageWith("DE")), build(specialistsBrokerWith()), getInstance(test.getClass().getField("entityOptions")), test);
 
 		assertThat(test.entityOptions.size(), is(2));
 		assertThat(test.entityOptions.contains(entity), is(true));
@@ -177,7 +178,7 @@ public class OptionsMappingStrategyTest {
 		options.add(build(optionWith().aValue("option2")));
 
 		de.espirit.firstspirit.forms.FormField<Set<Option>> formField = build(FormFieldMock.<Set<Option>>formFieldWith().aValue(options));
-		optionsMappingStrategy.map(formField, build(gomFormElementWith("test")), build(languageWith("DE")), getInstance(test.getClass().getMethod("setPrivateOptions", Set.class)), test);
+		optionsMappingStrategy.map(formField, build(gomFormElementWith("test")), build(languageWith("DE")), build(specialistsBrokerWith()), getInstance(test.getClass().getMethod("setPrivateOptions", Set.class)), test);
 
 		Set<String> privateOptions = test.getPrivateOptions();
 		assertThat(privateOptions.size(), is(2));
@@ -197,7 +198,7 @@ public class OptionsMappingStrategyTest {
 		options.add(build(optionWith().aValue(entity2)));
 
 		de.espirit.firstspirit.forms.FormField<Set<Option>> formField = build(FormFieldMock.<Set<Option>>formFieldWith().aValue(options));
-		optionsMappingStrategy.map(formField, build(gomFormElementWith("test")), build(languageWith("DE")), getInstance(test.getClass().getMethod("setPrivateEntityOptions", Set.class)), test);
+		optionsMappingStrategy.map(formField, build(gomFormElementWith("test")), build(languageWith("DE")), build(specialistsBrokerWith()), getInstance(test.getClass().getMethod("setPrivateEntityOptions", Set.class)), test);
 
 		Set<Entity> privateOptions = test.getPrivateEntityOptions();
 		assertThat(privateOptions.size(), is(2));

@@ -7,6 +7,7 @@ import com.divae.firstspirit.formdatalist.FormDataListServant;
 import de.espirit.firstspirit.access.Language;
 import de.espirit.firstspirit.access.editor.fslist.IdProvidingFormData;
 import de.espirit.firstspirit.access.store.templatestore.gom.GomFormElement;
+import de.espirit.firstspirit.agency.SpecialistsBroker;
 import de.espirit.firstspirit.forms.FormDataList;
 import de.espirit.firstspirit.forms.FormField;
 
@@ -36,7 +37,7 @@ public class FormDataListInlineMappingStrategy implements MappingStrategy {
 
     @SuppressWarnings("unchecked")
     @Override
-    public <O> void map(final AnnotatedMember from, final O fromObject, final FormField<?> to, final GomFormElement toGomFormElement, final Language language) {
+    public <O> void map(final AnnotatedMember from, final O fromObject, final FormField<?> to, final GomFormElement toGomFormElement, final Language language, final SpecialistsBroker specialistsBroker) {
         notNull(from);
         notNull(fromObject);
         notNull(to);
@@ -47,14 +48,14 @@ public class FormDataListInlineMappingStrategy implements MappingStrategy {
 
         final Collection<Object> objects = createCollection(from.get(fromObject));
 
-        map(objects, formDataList, language);
+        map(objects, formDataList, language, specialistsBroker);
 
         formField.set(formDataList);
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public <O> void map(final FormField<?> from, final GomFormElement fromGomFormElement, final Language language, final AnnotatedMember to, final O toObject) {
+    public <O> void map(final FormField<?> from, final GomFormElement fromGomFormElement, final Language language, final SpecialistsBroker specialistsBroker, final AnnotatedMember to, final O toObject) {
         notNull(from);
         notNull(to);
         notNull(toObject);
@@ -64,7 +65,7 @@ public class FormDataListInlineMappingStrategy implements MappingStrategy {
             return;
         }
 
-        final Object object = map(formDataList, language, to);
+        final Object object = map(formDataList, language, specialistsBroker, to);
         if (object == null) {
             return;
         }
@@ -72,7 +73,7 @@ public class FormDataListInlineMappingStrategy implements MappingStrategy {
         to.set(toObject, object);
     }
 
-    <O> void map(final Collection<O> objects, final FormDataList formDataList, final Language language) {
+    <O> void map(final Collection<O> objects, final FormDataList formDataList, final Language language, final SpecialistsBroker specialistsBroker) {
         for (final O object : objects) {
             final String templateUid = TEMPLATE_SERVANT.getTemplateValue(object.getClass());
             if (templateUid == null) {
@@ -85,12 +86,12 @@ public class FormDataListInlineMappingStrategy implements MappingStrategy {
                 return;
             }
 
-            FORM_FIELD_MAPPER.map(object, idProvidingFormData, language);
+            FORM_FIELD_MAPPER.map(object, idProvidingFormData, language, specialistsBroker);
             formDataList.add(idProvidingFormData);
         }
     }
 
-    <O> O map(final IdProvidingFormData idProvidingFormData, final Language language, final Constructor<O> constructor) {
+    <O> O map(final IdProvidingFormData idProvidingFormData, final Language language, final SpecialistsBroker specialistsBroker, final Constructor<O> constructor) {
         final O object;
         try {
             object = constructor.newInstance();
@@ -99,28 +100,28 @@ public class FormDataListInlineMappingStrategy implements MappingStrategy {
             return null;
         }
 
-        FORM_FIELD_MAPPER.map(idProvidingFormData, language, object);
+        FORM_FIELD_MAPPER.map(idProvidingFormData, language, specialistsBroker, object);
         return object;
     }
 
     @SuppressWarnings("unchecked")
-    Object map(final FormDataList formDataList, final Language language, final AnnotatedMember annotatedMember) {
+    Object map(final FormDataList formDataList, final Language language, final SpecialistsBroker specialistsBroker, final AnnotatedMember annotatedMember) {
         final Class<?> parameterClass = annotatedMember.getSetType();
         final boolean isCollection = Collection.class.isAssignableFrom(parameterClass);
         final Constructor<?> declaredConstructor = annotatedMember.getSetDeclaredConstructor();
 
-        return !isCollection ? map(formDataList.get(0), language, declaredConstructor) : map(formDataList, language, declaredConstructor);
+        return !isCollection ? map(formDataList.get(0), language, specialistsBroker, declaredConstructor) : map(formDataList, language, specialistsBroker, declaredConstructor);
     }
 
-    <O> Collection<O> map(final FormDataList formDataList, final Language language, final Constructor<O> constructor) {
+    <O> Collection<O> map(final FormDataList formDataList, final Language language, final SpecialistsBroker specialistsBroker, final Constructor<O> constructor) {
         final Collection<O> objects = new ArrayList<>();
 
         for (final IdProvidingFormData idProvidingFormData : formDataList) {
-            final O object = map(idProvidingFormData, language, constructor);
+            final O object = map(idProvidingFormData, language, specialistsBroker, constructor);
             if (object == null) {
                 continue;
             }
-            FORM_FIELD_MAPPER.map(idProvidingFormData, language, object);
+            FORM_FIELD_MAPPER.map(idProvidingFormData, language, specialistsBroker, object);
             objects.add(object);
         }
 

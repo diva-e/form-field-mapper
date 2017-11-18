@@ -8,6 +8,7 @@ import static com.divae.firstspirit.AnnotatedMemberModule.getInstance;
 import static com.divae.firstspirit.BuilderMock.build;
 import static com.divae.firstspirit.access.LanguageMock.languageWith;
 import static com.divae.firstspirit.access.store.templatestore.gom.GomFormElementMock.gomFormElementWith;
+import static com.divae.firstspirit.agency.SpecialistsBrokerMock.specialistsBrokerWith;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -26,7 +27,7 @@ public class StringMappingStrategyTest {
 		test.string = "string";
 
 		de.espirit.firstspirit.forms.FormField<String> formField = build(FormFieldMock.<String>formFieldWith().aType(String.class));
-		stringMappingStrategy.map(getInstance(test.getClass().getField("string")), test, formField, build(gomFormElementWith("test")), build(languageWith("DE")));
+        stringMappingStrategy.map(getInstance(test.getClass().getField("string")), test, formField, build(gomFormElementWith("test")), build(languageWith("DE")), build(specialistsBrokerWith()));
 
 		assertThat(formField.get(), is("string"));
 	}
@@ -37,7 +38,7 @@ public class StringMappingStrategyTest {
 		test.setPrivateString("string");
 
 		de.espirit.firstspirit.forms.FormField<String> formField = build(FormFieldMock.<String>formFieldWith().aType(String.class));
-		stringMappingStrategy.map(getInstance(test.getClass().getMethod("getPrivateString")), test, formField, build(gomFormElementWith("test")), build(languageWith("DE")));
+        stringMappingStrategy.map(getInstance(test.getClass().getMethod("getPrivateString")), test, formField, build(gomFormElementWith("test")), build(languageWith("DE")), build(specialistsBrokerWith()));
 
 		assertThat(formField.get(), is("string"));
 	}
@@ -47,7 +48,7 @@ public class StringMappingStrategyTest {
 		TestClass test = new TestClass();
 
 		de.espirit.firstspirit.forms.FormField<String> formField = build(FormFieldMock.<String>formFieldWith().aValue("string"));
-		stringMappingStrategy.map(formField, build(gomFormElementWith("test")), build(languageWith("DE")), getInstance(test.getClass().getField("string")), test);
+        stringMappingStrategy.map(formField, build(gomFormElementWith("test")), build(languageWith("DE")), build(specialistsBrokerWith()), getInstance(test.getClass().getField("string")), test);
 
 		assertThat(test.string, is("string"));
 	}
@@ -57,7 +58,7 @@ public class StringMappingStrategyTest {
 		TestClass test = new TestClass();
 
 		de.espirit.firstspirit.forms.FormField<String> formField = build(FormFieldMock.<String>formFieldWith().aValue("string"));
-		stringMappingStrategy.map(formField, build(gomFormElementWith("test")), build(languageWith("DE")), getInstance(test.getClass().getMethod("setPrivateString", String.class)), test);
+        stringMappingStrategy.map(formField, build(gomFormElementWith("test")), build(languageWith("DE")), build(specialistsBrokerWith()), getInstance(test.getClass().getMethod("setPrivateString", String.class)), test);
 
 		assertThat(test.getPrivateString(), is("string"));
 	}
