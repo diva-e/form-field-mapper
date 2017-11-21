@@ -6,7 +6,7 @@
 
 	<groupId>com.diva-e.firstspirit</groupId>
 	<artifactId>form-field-mapper</artifactId>
-	<version>1.1.1</version>
+	<version>1.1.2-SNAPSHOT</version>
 
 	<name>FirstSpirit Form Field Mapper</name>
 	<description>Project for mapping java field values into FirstSpirit Fields via annotations and vise versa.</description>
