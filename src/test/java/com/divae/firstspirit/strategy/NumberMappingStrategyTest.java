@@ -8,6 +8,7 @@ import static com.divae.firstspirit.AnnotatedMemberModule.getInstance;
 import static com.divae.firstspirit.BuilderMock.build;
 import static com.divae.firstspirit.access.LanguageMock.languageWith;
 import static com.divae.firstspirit.access.store.templatestore.gom.GomFormElementMock.gomFormElementWith;
+import static com.divae.firstspirit.agency.SpecialistsBrokerMock.specialistsBrokerWith;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -32,7 +33,7 @@ public class NumberMappingStrategyTest {
 		test.number = 123.0;
 
 		de.espirit.firstspirit.forms.FormField<Double> formField = build(FormFieldMock.<Double>formFieldWith().aType(Double.class));
-		numberMappingStrategy.map(getInstance(test.getClass().getField("number")), test, formField, build(gomFormElementWith("test")), build(languageWith("DE")));
+        numberMappingStrategy.map(getInstance(test.getClass().getField("number")), test, formField, build(gomFormElementWith("test")), build(languageWith("DE")), build(specialistsBrokerWith()));
 
 		assertThat(formField.get(), is(123.0));
 	}
@@ -43,7 +44,7 @@ public class NumberMappingStrategyTest {
 		test.setPrivateNumber(123.0);
 
 		de.espirit.firstspirit.forms.FormField<Double> formField = build(FormFieldMock.<Double>formFieldWith().aType(Double.class));
-		numberMappingStrategy.map(getInstance(test.getClass().getMethod("getPrivateNumber")), test, formField, build(gomFormElementWith("test")), build(languageWith("DE")));
+        numberMappingStrategy.map(getInstance(test.getClass().getMethod("getPrivateNumber")), test, formField, build(gomFormElementWith("test")), build(languageWith("DE")), build(specialistsBrokerWith()));
 
 		assertThat(formField.get(), is(123.0));
 	}
@@ -53,7 +54,7 @@ public class NumberMappingStrategyTest {
 		TestClass test = new TestClass();
 
 		de.espirit.firstspirit.forms.FormField<Double> formField = build(FormFieldMock.<Double>formFieldWith().aValue(123.0));
-		numberMappingStrategy.map(formField, build(gomFormElementWith("test")), build(languageWith("DE")), getInstance(test.getClass().getField("number")), test);
+        numberMappingStrategy.map(formField, build(gomFormElementWith("test")), build(languageWith("DE")), build(specialistsBrokerWith()), getInstance(test.getClass().getField("number")), test);
 
 		assertThat(test.number, is(123.0));
 	}
@@ -63,7 +64,7 @@ public class NumberMappingStrategyTest {
 		TestClass test = new TestClass();
 
 		de.espirit.firstspirit.forms.FormField<Double> formField = build(FormFieldMock.<Double>formFieldWith().aValue(123.0));
-		numberMappingStrategy.map(formField, build(gomFormElementWith("test")), build(languageWith("DE")), getInstance(test.getClass().getMethod("setPrivateNumber", Double.class)), test);
+        numberMappingStrategy.map(formField, build(gomFormElementWith("test")), build(languageWith("DE")), build(specialistsBrokerWith()), getInstance(test.getClass().getMethod("setPrivateNumber", Double.class)), test);
 
 		assertThat(test.getPrivateNumber(), is(123.0));
 	}

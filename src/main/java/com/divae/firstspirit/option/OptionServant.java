@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 public class OptionServant {
 
-	public Collection<String> getValues(final Set<Option> options) {
-		return options.stream().map(option -> (String) option.getValue()).collect(Collectors.toSet());
-	}
+    public Collection<Object> getValues(final Set<Option> options) {
+        return options.stream().map(Option::getValue).collect(Collectors.toSet());
+    }
 }

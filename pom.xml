@@ -6,7 +6,7 @@
 
 	<groupId>com.diva-e.firstspirit</groupId>
 	<artifactId>form-field-mapper</artifactId>
-	<version>1.0.3</version>
+	<version>1.1.0</version>
 
 	<name>FirstSpirit Form Field Mapper</name>
 	<description>Project for mapping java field values into FirstSpirit Fields via annotations and vise versa.</description>
@@ -43,7 +43,18 @@
 	</properties>
 
 	<build>
-		<plugins>
+        <resources>
+            <resource>
+                <directory>${basedir}</directory>
+                <targetPath>META-INF</targetPath>
+                <includes>
+                    <include>README.md</include>
+                    <include>LICENSE.txt</include>
+                </includes>
+            </resource>
+        </resources>
+
+        <plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.6.1</version>

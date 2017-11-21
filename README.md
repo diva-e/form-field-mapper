@@ -11,7 +11,9 @@ This is a FirstSpirit form field mapper that transfer data from a java class via
     * String (HTML) <-> DomElement
     * Collection<Object> <-> FormDataList (inline, database)
     * String <-> Option
-    * Collection<Object> <-> Collection<Options>
+    * Entity (native, database) <-> Option
+    * Collection<String> <-> Collection<Options>
+    * Collection<Entity> ((native, database) <-> Collection<Options>
 * Annotations can be used in Setter, Getter or accessible class attributes
 * Map nested java classes for example FirstSpirit FormDataList with section templates
 
@@ -23,11 +25,12 @@ This is a FirstSpirit form field mapper that transfer data from a java class via
 
 ### Via Maven Repo (local or remote)
 #### Maven
-`<dependency>
+```<dependency>
 	<groupId>com.diva-e.firstspirit</groupId>
 	<artifactId>form-field-mapper</artifactId>
 	<version>${form-field-mapper-version}</version>
-</dependency>`
+</dependency>
+```
 
 
 ## Ho to use it
@@ -38,10 +41,11 @@ Usage start with creation of a reusable (stateless) FormFieldMapper instance:
 
 ### Usage, reading from FirstSpirit
 
-`FormData formData = <getFormDataViaAPI()>
-Language language = <getLanguageForAllFormFieldFromViaAPIOrNull()>`
+```FormData formData = <getFormDataViaAPI()>
+Language language = <getLanguageForAllFormFieldFromViaAPIOrNull()>
+```
 
-`DTO dto = new DTO() {
+```DTO dto = new DTO() {
 
 	@FormField("<FirstSpiritFormFieldName>")
 	public <SupportedClassOrCollection> attribute;
@@ -50,13 +54,14 @@ Language language = <getLanguageForAllFormFieldFromViaAPIOrNull()>`
 	public void setOtherAttribute(<SupportedClassOrCollection> otherAttribute) {
 		...
 	}
-}`
+}
+```
 
 `formFieldMapper.map(formData, dto, language);`
 
 
 ### Usage, writing to FirstSpirit
-`DTO dto = new DTO() {
+```DTO dto = new DTO() {
 
 	@FormField("<FirstSpiritFormFieldName>")
 	public <SupportedClassOrCollection> attribute;
@@ -65,30 +70,35 @@ Language language = <getLanguageForAllFormFieldFromViaAPIOrNull()>`
 	public <SupportedClassOrCollection> getOtherAttribute() {
 		...
 	}
-}`
+}
+```
 
-`FormData formData = <getFormDataViaAPI()>
-Language language = <getLanguageForAllFormFieldFromViaAPIOrNull()>`
+```FormData formData = <getFormDataViaAPI()>
+Language language = <getLanguageForAllFormFieldFromViaAPIOrNull()>
+```
 
 `formFieldMapper.map(dto, formData, language);`
 
 
 ### Mapping FormFields with section templates like in FormDataList
-`@Template("<FirstSpiritTemplateName>")
+```@Template("<FirstSpiritTemplateName>")
 public class Source {
 
 	@FormField(<FirstSpiritFormFieldName>")
 	public <SupportedClassOrCollection> attribute;
-}`
+}
+```
 
-`public class DTO {
+```public class DTO {
 
 	@FormField(<FirstSpiritFormFieldName>")
 	public Collection<Source> attribute;
-}`
+}
+```
 
-`FormData formData = <getFormDataViaAPI()>
-Language language = <getLanguageForAllFormFieldFromViaAPIOrNull()>`
+```FormData formData = <getFormDataViaAPI()>
+Language language = <getLanguageForAllFormFieldFromViaAPIOrNull()>
+```
 
 `formFieldMapper.map(dto, formData, language);`
 

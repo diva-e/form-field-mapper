@@ -4,6 +4,7 @@ import com.divae.firstspirit.access.LanguageMock.LanguageBuilder;
 import com.divae.firstspirit.annotation.FormField;
 import com.divae.firstspirit.forms.FormFieldMock;
 import de.espirit.firstspirit.access.Language;
+import de.espirit.firstspirit.agency.SpecialistsBroker;
 import de.espirit.firstspirit.forms.FormData;
 import org.junit.Test;
 
@@ -11,6 +12,7 @@ import static com.divae.firstspirit.BuilderMock.build;
 import static com.divae.firstspirit.access.LanguageMock.languageWith;
 import static com.divae.firstspirit.access.store.templatestore.gom.GomEditorProviderMock.gomEditorProviderWith;
 import static com.divae.firstspirit.access.store.templatestore.gom.GomFormElementMock.gomFormElementWith;
+import static com.divae.firstspirit.agency.SpecialistsBrokerMock.specialistsBrokerWith;
 import static com.divae.firstspirit.forms.FormDataMock.formDataWith;
 import static java.util.Arrays.asList;
 import static org.hamcrest.Matchers.is;
@@ -44,9 +46,10 @@ public class FormFieldMapperTest {
 						FormFieldMock.<Long>formFieldWith().aType(Long.class), languageBuilder, "tt_second_number")
 		);
 		Language language = build(languageBuilder);
+        SpecialistsBroker specialistsBroker = build(specialistsBrokerWith());
 
-		formFieldMapper.map(fromTest, formData, language);
-		assertThat(((de.espirit.firstspirit.forms.FormField<String>) formData.get(language, "tt_string")).get(), is("fromString"));
+        formFieldMapper.map(fromTest, formData, language, specialistsBroker);
+        assertThat(((de.espirit.firstspirit.forms.FormField<String>) formData.get(language, "tt_string")).get(), is("fromString"));
 		assertThat(((de.espirit.firstspirit.forms.FormField<String>) formData.get(language, "tt_second_string")).get(), is("fromSecondString"));
 		assertThat(((de.espirit.firstspirit.forms.FormField<Long>) formData.get(language, "tt_number")).get(), is(1234L));
 		assertThat(((de.espirit.firstspirit.forms.FormField<Long>) formData.get(language, "tt_second_number")).get(), is(123456L));
@@ -72,9 +75,10 @@ public class FormFieldMapperTest {
 				.aValue(() -> FormFieldMock.<Long>formFieldWith().aType(Long.class), languageBuilder, "tt_second_number")
 		);
 		Language language = build(languageBuilder);
+        SpecialistsBroker specialistsBroker = build(specialistsBrokerWith());
 
-		formFieldMapper.map(fromTest, formData, language);
-		assertThat(((de.espirit.firstspirit.forms.FormField<String>) formData.get(language, "tt_string")).get(), is(nullValue()));
+        formFieldMapper.map(fromTest, formData, language, specialistsBroker);
+        assertThat(((de.espirit.firstspirit.forms.FormField<String>) formData.get(language, "tt_string")).get(), is(nullValue()));
 		assertThat(((de.espirit.firstspirit.forms.FormField<String>) formData.get(language, "tt_second_string")).get(), is(nullValue()));
 		assertThat(((de.espirit.firstspirit.forms.FormField<Long>) formData.get(language, "tt_number")).get(), is(nullValue()));
 		assertThat(((de.espirit.firstspirit.forms.FormField<Long>) formData.get(language, "tt_second_number")).get(), is(nullValue()));
@@ -85,7 +89,8 @@ public class FormFieldMapperTest {
 		TestClass toTest = new TestClass();
 
 		LanguageBuilder languageBuilder = languageWith("DE");
-		FormData formData = build(formDataWith().aForm(() ->
+        SpecialistsBroker specialistsBroker = build(specialistsBrokerWith());
+        FormData formData = build(formDataWith().aForm(() ->
 				gomEditorProviderWith("test").values(() ->
 						asList(gomFormElementWith("tt_string"), gomFormElementWith("tt_second_string"), gomFormElementWith("tt_number"), gomFormElementWith("tt_second_number"))))
 				.aValue(() ->
@@ -98,8 +103,8 @@ public class FormFieldMapperTest {
 						FormFieldMock.<Long>formFieldWith().aValue(123456L), languageBuilder, "tt_second_number")
 		);
 
-		formFieldMapper.map(formData, build(languageBuilder), toTest);
-		assertThat(toTest.string, is("fromString"));
+        formFieldMapper.map(formData, build(languageBuilder), specialistsBroker, toTest);
+        assertThat(toTest.string, is("fromString"));
 		assertThat(toTest.getSecondString(), is("fromSecondString"));
 		assertThat(toTest.number, is(1234L));
 		assertThat(toTest.getSecondNumber(), is(123456L));
@@ -110,7 +115,8 @@ public class FormFieldMapperTest {
 		InvalidTestClass toTest = new InvalidTestClass();
 
 		LanguageBuilder languageBuilder = languageWith("DE");
-		FormData formData = build(formDataWith().aForm(() ->
+        SpecialistsBroker specialistsBroker = build(specialistsBrokerWith());
+        FormData formData = build(formDataWith().aForm(() ->
 				gomEditorProviderWith("test").values(() ->
 						asList(gomFormElementWith("tt_string"), gomFormElementWith("tt_second_string"), gomFormElementWith("tt_number"), gomFormElementWith("tt_second_number"))))
 				.aValue(() ->
@@ -123,8 +129,8 @@ public class FormFieldMapperTest {
 						FormFieldMock.<Long>formFieldWith().aValue(123456L), languageBuilder, "tt_second_number")
 		);
 
-		formFieldMapper.map(formData, build(languageBuilder), toTest);
-		assertThat(toTest.string, is(nullValue()));
+        formFieldMapper.map(formData, build(languageBuilder), specialistsBroker, toTest);
+        assertThat(toTest.string, is(nullValue()));
 		assertThat(toTest.getSecondString(), is(nullValue()));
 		assertThat(toTest.number, is(nullValue()));
 		assertThat(toTest.getSecondNumber(), is(nullValue()));

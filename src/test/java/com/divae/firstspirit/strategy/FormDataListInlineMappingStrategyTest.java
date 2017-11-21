@@ -10,6 +10,7 @@ import de.espirit.firstspirit.access.Language;
 import de.espirit.firstspirit.access.editor.fslist.IdProvidingFormData;
 import de.espirit.firstspirit.access.store.templatestore.SectionTemplate;
 import de.espirit.firstspirit.access.store.templatestore.gom.GomFormElement;
+import de.espirit.firstspirit.agency.SpecialistsBroker;
 import de.espirit.firstspirit.forms.FormDataList;
 import org.junit.Test;
 
@@ -28,6 +29,7 @@ import static com.divae.firstspirit.access.store.templatestore.SectionTemplatesM
 import static com.divae.firstspirit.access.store.templatestore.TemplateStoreRootMock.templateStoreRootWith;
 import static com.divae.firstspirit.access.store.templatestore.gom.GomEditorProviderMock.gomEditorProviderWith;
 import static com.divae.firstspirit.access.store.templatestore.gom.GomFormElementMock.gomFormElementWith;
+import static com.divae.firstspirit.agency.SpecialistsBrokerMock.specialistsBrokerWith;
 import static com.divae.firstspirit.forms.FormDataListMock.formDataListWith;
 import static com.divae.firstspirit.forms.FormFieldMock.formFieldWith;
 import static de.espirit.firstspirit.access.store.IDProvider.UidType.TEMPLATESTORE;
@@ -77,10 +79,11 @@ public class FormDataListInlineMappingStrategyTest {
 																asList(gomFormElementWith("st_string"), gomFormElementWith("st_private_string")))), sectionTemplateBuilder))))
 		);
 		Language language = build(languageBuilder);
-		GomFormElement gomFormElement = build(gomFormElementBuilder);
+        SpecialistsBroker specialistsBroker = build(specialistsBrokerWith());
+        GomFormElement gomFormElement = build(gomFormElementBuilder);
 
-		formDataListInlineMappingStrategy.map(getInstance(testClass.getClass().getField("singleObject")), testClass, formField, gomFormElement, language);
-		FormDataList formDataList = formField.get();
+        formDataListInlineMappingStrategy.map(getInstance(testClass.getClass().getField("singleObject")), testClass, formField, gomFormElement, language, specialistsBroker);
+        FormDataList formDataList = formField.get();
 		assertThat(formDataList.size(), is(1));
 		assertThat(formDataList.get(0).get(language, "st_string").get(), is("test"));
 	}
@@ -114,10 +117,11 @@ public class FormDataListInlineMappingStrategyTest {
                                                                 asList(gomFormElementWith("st_string"), gomFormElementWith("st_private_string")))), sectionTemplateBuilder))))
         );
 		Language language = build(languageBuilder);
-		GomFormElement gomFormElement = build(gomFormElementBuilder);
+        SpecialistsBroker specialistsBroker = build(specialistsBrokerWith());
+        GomFormElement gomFormElement = build(gomFormElementBuilder);
 
-		formDataListInlineMappingStrategy.map(getInstance(testClass.getClass().getMethod("getPrivateSingleObject")), testClass, formField, gomFormElement, language);
-		FormDataList formDataList = formField.get();
+        formDataListInlineMappingStrategy.map(getInstance(testClass.getClass().getMethod("getPrivateSingleObject")), testClass, formField, gomFormElement, language, specialistsBroker);
+        FormDataList formDataList = formField.get();
 		assertThat(formDataList.size(), is(1));
 		assertThat(formDataList.get(0).get(language, "st_string").get(), is("test"));
 	}
@@ -135,10 +139,12 @@ public class FormDataListInlineMappingStrategyTest {
 		);
 		GomFormElement gomFormElement = build(gomFormElementBuilder);
 		Language language = build(languageBuilder);
+        SpecialistsBroker specialistsBroker = build(specialistsBrokerWith());
+
 		TestClass testClass = new TestClass();
 
-		formDataListInlineMappingStrategy.map(formField, gomFormElement, language, getInstance(testClass.getClass().getField("singleObject")), testClass);
-		assertThat(testClass.singleObject.string, is("test"));
+        formDataListInlineMappingStrategy.map(formField, gomFormElement, language, specialistsBroker, getInstance(testClass.getClass().getField("singleObject")), testClass);
+        assertThat(testClass.singleObject.string, is("test"));
 	}
 
 	@Test
@@ -156,10 +162,12 @@ public class FormDataListInlineMappingStrategyTest {
 		);
 		GomFormElement gomFormElement = build(gomFormElementBuilder);
 		Language language = build(languageBuilder);
+        SpecialistsBroker specialistsBroker = build(specialistsBrokerWith());
+
 		TestClass testClass = new TestClass();
 
-		formDataListInlineMappingStrategy.map(formField, gomFormElement, language, getInstance(testClass.getClass().getMethod("setPrivateSingleObject", SecondTestClass.class)), testClass);
-		assertThat(testClass.getPrivateSingleObject().string, is("test"));
+        formDataListInlineMappingStrategy.map(formField, gomFormElement, language, specialistsBroker, getInstance(testClass.getClass().getMethod("setPrivateSingleObject", SecondTestClass.class)), testClass);
+        assertThat(testClass.getPrivateSingleObject().string, is("test"));
 	}
 
 	@Test
@@ -190,8 +198,9 @@ public class FormDataListInlineMappingStrategyTest {
 												asList(gomFormElementWith("st_string"), gomFormElementWith("st_private_string")))), sectionTemplateBuilder))
 		);
 		Language language = build(languageBuilder);
+        SpecialistsBroker specialistsBroker = build(specialistsBrokerWith());
 
-		formDataListInlineMappingStrategy.map(secondTests, formDataList, language);
+        formDataListInlineMappingStrategy.map(secondTests, formDataList, language, specialistsBroker);
 
 		assertThat(formDataList.size(), is(2));
 		assertThat(formDataList.get(0).get(language, "st_string").get(), is("string"));
@@ -212,8 +221,9 @@ public class FormDataListInlineMappingStrategyTest {
 								asList(gomFormElementWith("st_string"), gomFormElementWith("st_private_string"))))
 		);
 		Language language = build(languageBuilder);
+        SpecialistsBroker specialistsBroker = build(specialistsBrokerWith());
 
-		SecondTestClass secondTest = formDataListInlineMappingStrategy.map(providingFormData, language, SecondTestClass.class.getDeclaredConstructor());
+        SecondTestClass secondTest = formDataListInlineMappingStrategy.map(providingFormData, language, specialistsBroker, SecondTestClass.class.getDeclaredConstructor());
 
 		assertThat(secondTest.string, is("string"));
 		assertThat(secondTest.getPrivateString(), is("privateString"));
@@ -238,9 +248,10 @@ public class FormDataListInlineMappingStrategyTest {
 										gomEditorProviderWith("test").values(() -> asList(gomFormElementWith("st_string"), gomFormElementWith("st_private_string"))))))
 		);
 		Language language = build(languageBuilder);
+        SpecialistsBroker specialistsBroker = build(specialistsBrokerWith());
 
-		SecondTestClass secondTest = (SecondTestClass) formDataListInlineMappingStrategy.map(formDataList, language, getInstance(TestClass.class.getField("singleObject")));
-		assertThat(secondTest.string, is("string"));
+        SecondTestClass secondTest = (SecondTestClass) formDataListInlineMappingStrategy.map(formDataList, language, specialistsBroker, getInstance(TestClass.class.getField("singleObject")));
+        assertThat(secondTest.string, is("string"));
 		assertThat(secondTest.getPrivateString(), is("privateString"));
 	}
 
@@ -263,9 +274,10 @@ public class FormDataListInlineMappingStrategyTest {
 										gomEditorProviderWith("test").values(() ->
 												asList(gomFormElementWith("st_string"), gomFormElementWith("st_private_string")))))));
 		Language language = build(languageBuilder);
+        SpecialistsBroker specialistsBroker = build(specialistsBrokerWith());
 
 		@SuppressWarnings("unchecked")
-		Collection<Object> objects = (Collection<Object>) formDataListInlineMappingStrategy.map(formDataList, language, getInstance(TestClass.class.getField("objects")));
+        Collection<Object> objects = (Collection<Object>) formDataListInlineMappingStrategy.map(formDataList, language, specialistsBroker, getInstance(TestClass.class.getField("objects")));
 
 		assertThat(objects.size(), is(2));
 
@@ -298,9 +310,10 @@ public class FormDataListInlineMappingStrategyTest {
 										asList(gomFormElementWith("st_string"), gomFormElementWith("st_private_string"))))))
 		);
 		Language language = build(languageBuilder);
+        SpecialistsBroker specialistsBroker = build(specialistsBrokerWith());
 
-		SecondTestClass secondTest = (SecondTestClass) formDataListInlineMappingStrategy.map(formDataList, language, getInstance(TestClass.class.getMethod("setPrivateSingleObject", SecondTestClass.class)));
-		assertThat(secondTest.string, is("string"));
+        SecondTestClass secondTest = (SecondTestClass) formDataListInlineMappingStrategy.map(formDataList, language, specialistsBroker, getInstance(TestClass.class.getMethod("setPrivateSingleObject", SecondTestClass.class)));
+        assertThat(secondTest.string, is("string"));
 		assertThat(secondTest.getPrivateString(), is("privateString"));
 
 	}
@@ -325,9 +338,10 @@ public class FormDataListInlineMappingStrategyTest {
 												asList(gomFormElementWith("st_string"), gomFormElementWith("st_private_string"))))))
 		);
 		Language language = build(languageBuilder);
+        SpecialistsBroker specialistsBroker = build(specialistsBrokerWith());
 
 		@SuppressWarnings("unchecked")
-		Collection<Object> objects = (Collection<Object>) formDataListInlineMappingStrategy.map(formDataList, language, getInstance(TestClass.class.getMethod("setPrivateObjects", Collection.class)));
+        Collection<Object> objects = (Collection<Object>) formDataListInlineMappingStrategy.map(formDataList, language, specialistsBroker, getInstance(TestClass.class.getMethod("setPrivateObjects", Collection.class)));
 
 		assertThat(objects.size(), is(2));
 
@@ -361,8 +375,9 @@ public class FormDataListInlineMappingStrategyTest {
 												asList(gomFormElementWith("st_string"), gomFormElementWith("st_private_string"))))))
 		);
 		Language language = build(languageBuilder);
+        SpecialistsBroker specialistsBroker = build(specialistsBrokerWith());
 
-		Collection<SecondTestClass> secondTests = formDataListInlineMappingStrategy.map(formDataList, language, SecondTestClass.class.getDeclaredConstructor());
+        Collection<SecondTestClass> secondTests = formDataListInlineMappingStrategy.map(formDataList, language, specialistsBroker, SecondTestClass.class.getDeclaredConstructor());
 
 		assertThat(secondTests.size(), is(2));
 

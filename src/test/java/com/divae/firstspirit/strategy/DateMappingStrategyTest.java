@@ -10,6 +10,7 @@ import static com.divae.firstspirit.AnnotatedMemberModule.getInstance;
 import static com.divae.firstspirit.BuilderMock.build;
 import static com.divae.firstspirit.access.LanguageMock.languageWith;
 import static com.divae.firstspirit.access.store.templatestore.gom.GomFormElementMock.gomFormElementWith;
+import static com.divae.firstspirit.agency.SpecialistsBrokerMock.specialistsBrokerWith;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -29,7 +30,7 @@ public class DateMappingStrategyTest {
 		test.date = currentDate;
 
 		de.espirit.firstspirit.forms.FormField<Date> formField = build(FormFieldMock.<Date>formFieldWith().aType(Date.class));
-		dateMappingStrategy.map(getInstance(test.getClass().getField("date")), test, formField, build(gomFormElementWith("test")), build(languageWith("DE")));
+        dateMappingStrategy.map(getInstance(test.getClass().getField("date")), test, formField, build(gomFormElementWith("test")), build(languageWith("DE")), build(specialistsBrokerWith()));
 
 		assertThat(formField.get(), is(currentDate));
 	}
@@ -41,7 +42,7 @@ public class DateMappingStrategyTest {
 		test.setPrivateDate(currentDate);
 
 		de.espirit.firstspirit.forms.FormField<Date> formField = build(FormFieldMock.<Date>formFieldWith().aType(Date.class));
-		dateMappingStrategy.map(getInstance(test.getClass().getMethod("getPrivateDate")), test, formField, build(gomFormElementWith("test")), build(languageWith("DE")));
+        dateMappingStrategy.map(getInstance(test.getClass().getMethod("getPrivateDate")), test, formField, build(gomFormElementWith("test")), build(languageWith("DE")), build(specialistsBrokerWith()));
 
 		assertThat(formField.get(), is(currentDate));
 	}
@@ -52,7 +53,7 @@ public class DateMappingStrategyTest {
 		Date currentDate = new Date();
 
 		de.espirit.firstspirit.forms.FormField<Date> formField = build(FormFieldMock.<Date>formFieldWith().aValue(currentDate));
-		dateMappingStrategy.map(formField, build(gomFormElementWith("test")), build(languageWith("DE")), getInstance(test.getClass().getField("date")), test);
+        dateMappingStrategy.map(formField, build(gomFormElementWith("test")), build(languageWith("DE")), build(specialistsBrokerWith()), getInstance(test.getClass().getField("date")), test);
 
 		assertThat(test.date, is(currentDate));
 	}
@@ -63,7 +64,7 @@ public class DateMappingStrategyTest {
 		Date currentDate = new Date();
 
 		de.espirit.firstspirit.forms.FormField<Date> formField = build(FormFieldMock.<Date>formFieldWith().aValue(currentDate));
-		dateMappingStrategy.map(formField, build(gomFormElementWith("test")), build(languageWith("DE")), getInstance(test.getClass().getMethod("setPrivateDate", Date.class)), test);
+        dateMappingStrategy.map(formField, build(gomFormElementWith("test")), build(languageWith("DE")), build(specialistsBrokerWith()), getInstance(test.getClass().getMethod("setPrivateDate", Date.class)), test);
 
 		assertThat(test.getPrivateDate(), is(currentDate));
 	}

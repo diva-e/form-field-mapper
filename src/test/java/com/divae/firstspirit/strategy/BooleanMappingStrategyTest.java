@@ -8,6 +8,7 @@ import static com.divae.firstspirit.AnnotatedMemberModule.getInstance;
 import static com.divae.firstspirit.BuilderMock.build;
 import static com.divae.firstspirit.access.LanguageMock.languageWith;
 import static com.divae.firstspirit.access.store.templatestore.gom.GomFormElementMock.gomFormElementWith;
+import static com.divae.firstspirit.agency.SpecialistsBrokerMock.specialistsBrokerWith;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -27,7 +28,7 @@ public class BooleanMappingStrategyTest {
 		test.bool = true;
 
 		de.espirit.firstspirit.forms.FormField<Boolean> formField = build(FormFieldMock.<Boolean>formFieldWith().aType(Boolean.class));
-		booleanMappingStrategy.map(getInstance(test.getClass().getField("bool")), test, formField, build(gomFormElementWith("test")), build(languageWith("DE")));
+        booleanMappingStrategy.map(getInstance(test.getClass().getField("bool")), test, formField, build(gomFormElementWith("test")), build(languageWith("DE")), build(specialistsBrokerWith()));
 
 		assertThat(formField.get(), is(true));
 	}
@@ -38,7 +39,7 @@ public class BooleanMappingStrategyTest {
 		test.setPrivateBoolean(true);
 
 		de.espirit.firstspirit.forms.FormField<Boolean> formField = build(FormFieldMock.<Boolean>formFieldWith().aType(Boolean.class));
-		booleanMappingStrategy.map(getInstance(test.getClass().getMethod("getPrivateBoolean")), test, formField,build(gomFormElementWith("test")), build(languageWith("DE")));
+        booleanMappingStrategy.map(getInstance(test.getClass().getMethod("getPrivateBoolean")), test, formField, build(gomFormElementWith("test")), build(languageWith("DE")), build(specialistsBrokerWith()));
 
 		assertThat(formField.get(), is(true));
 	}
@@ -48,7 +49,7 @@ public class BooleanMappingStrategyTest {
 		TestClass test = new TestClass();
 
 		de.espirit.firstspirit.forms.FormField<Boolean> formField = build(FormFieldMock.<Boolean>formFieldWith().aValue(true));
-		booleanMappingStrategy.map(formField, build(gomFormElementWith("test")), build(languageWith("DE")), getInstance(test.getClass().getField("bool")), test);
+        booleanMappingStrategy.map(formField, build(gomFormElementWith("test")), build(languageWith("DE")), build(specialistsBrokerWith()), getInstance(test.getClass().getField("bool")), test);
 
 		assertThat(test.bool, is(true));
 	}
@@ -58,7 +59,7 @@ public class BooleanMappingStrategyTest {
 		TestClass test = new TestClass();
 
 		de.espirit.firstspirit.forms.FormField<Boolean> formField = build(FormFieldMock.<Boolean>formFieldWith().aValue(true));
-		booleanMappingStrategy.map(formField, build(gomFormElementWith("test")), build(languageWith("DE")), getInstance(test.getClass().getMethod("setPrivateBoolean", Boolean.class)), test);
+        booleanMappingStrategy.map(formField, build(gomFormElementWith("test")), build(languageWith("DE")), build(specialistsBrokerWith()), getInstance(test.getClass().getMethod("setPrivateBoolean", Boolean.class)), test);
 
 		assertThat(test.getPrivateBoolean(), is(true));
 	}
