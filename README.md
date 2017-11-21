@@ -25,11 +25,11 @@ This is a FirstSpirit form field mapper that transfer data from a java class via
 
 ### Via Maven Repo (local or remote)
 #### Maven
-```<dependency>
-	<groupId>com.diva-e.firstspirit</groupId>
-	<artifactId>form-field-mapper</artifactId>
-	<version>${form-field-mapper-version}</version>
-</dependency>
+``` <dependency>
+	    <groupId>com.diva-e.firstspirit</groupId>
+	    <artifactId>form-field-mapper</artifactId>
+	    <version>${form-field-mapper-version}</version>
+    </dependency>
 ```
 
 
@@ -41,11 +41,12 @@ Usage start with creation of a reusable (stateless) FormFieldMapper instance:
 
 ### Usage, reading from FirstSpirit
 
-```FormData formData = <getFormDataViaAPI()>
-Language language = <getLanguageForAllFormFieldFromViaAPIOrNull()>
+``` FormData formData = <getFormDataViaAPI()>
+    Language language = <getLanguageForAllFormFieldFromViaAPIOrNull()>
 ```
 
-```DTO dto = new DTO() {
+```
+DTO dto = new DTO() {
 
 	@FormField("<FirstSpiritFormFieldName>")
 	public <SupportedClassOrCollection> attribute;
@@ -61,7 +62,8 @@ Language language = <getLanguageForAllFormFieldFromViaAPIOrNull()>
 
 
 ### Usage, writing to FirstSpirit
-```DTO dto = new DTO() {
+```
+DTO dto = new DTO() {
 
 	@FormField("<FirstSpiritFormFieldName>")
 	public <SupportedClassOrCollection> attribute;
@@ -73,15 +75,16 @@ Language language = <getLanguageForAllFormFieldFromViaAPIOrNull()>
 }
 ```
 
-```FormData formData = <getFormDataViaAPI()>
-Language language = <getLanguageForAllFormFieldFromViaAPIOrNull()>
+``` FormData formData = <getFormDataViaAPI()>
+    Language language = <getLanguageForAllFormFieldFromViaAPIOrNull()>
 ```
 
 `formFieldMapper.map(dto, formData, language);`
 
 
 ### Mapping FormFields with section templates like in FormDataList
-```@Template("<FirstSpiritTemplateName>")
+```
+@Template("<FirstSpiritTemplateName>")
 public class Source {
 
 	@FormField(<FirstSpiritFormFieldName>")
@@ -89,15 +92,36 @@ public class Source {
 }
 ```
 
-```public class DTO {
+```
+public class DTO {
 
 	@FormField(<FirstSpiritFormFieldName>")
 	public Collection<Source> attribute;
 }
 ```
 
-```FormData formData = <getFormDataViaAPI()>
-Language language = <getLanguageForAllFormFieldFromViaAPIOrNull()>
+``` FormData formData = <getFormDataViaAPI()>
+    Language language = <getLanguageForAllFormFieldFromViaAPIOrNull()>
+```
+
+`formFieldMapper.map(dto, formData, language);`
+
+### Mapping Entities with extra class as database query like in Option
+```
+public static class Source {
+    @FormField(<FirstSpiritFormFieldName>")
+ 	public <SupportedClass> attribute;
+}
+
+@Database("database")
+public static class SupportedClass {
+    @FormField(value = "fs_id", isEntityName = true)
+    public Long fsId;
+}
+```
+
+``` FormData formData = <getFormDataViaAPI()>
+    Language language = <getLanguageForAllFormFieldFromViaAPIOrNull()>
 ```
 
 `formFieldMapper.map(dto, formData, language);`
