@@ -14,6 +14,7 @@ This is a FirstSpirit form field mapper that transfer data from a java class via
     * Entity (native, database) <-> Option
     * Collection<String> <-> Collection<Options>
     * Collection<Entity> ((native, database) <-> Collection<Options>
+    * DatasetContainer <-> Class
 * Annotations can be used in Setter, Getter or accessible class attributes
 * Map nested java classes for example FirstSpirit FormDataList with section templates
 
