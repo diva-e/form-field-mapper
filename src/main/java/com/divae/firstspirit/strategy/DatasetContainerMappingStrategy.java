@@ -4,7 +4,7 @@ import com.divae.firstspirit.AnnotatedMemberModule.AnnotatedMember;
 import com.divae.firstspirit.FormFieldMapper;
 import com.divae.firstspirit.annotation.DatabaseServant;
 import com.divae.firstspirit.content2.Content2Servant;
-import com.divae.firstspirit.entity.EntityServant;
+import com.divae.firstspirit.dataset.DatasetServant;
 import de.espirit.firstspirit.access.Language;
 import de.espirit.firstspirit.access.editor.value.DatasetContainer;
 import de.espirit.firstspirit.access.store.contentstore.Content2;
@@ -27,7 +27,7 @@ public class DatasetContainerMappingStrategy implements MappingStrategy {
 
     private static final DatabaseServant DATABASE_SERVANT = new DatabaseServant();
     private final static Content2Servant CONTENT2_SERVANT = new Content2Servant();
-    private final static EntityServant ENTITY_SERVANT = new EntityServant();
+    private final static DatasetServant DATASET_SERVANT = new DatasetServant();
     private static final FormFieldMapper FORM_FIELD_MAPPER = new FormFieldMapper();
 
     @Override
@@ -85,10 +85,8 @@ public class DatasetContainerMappingStrategy implements MappingStrategy {
             logWarning("Could not get database with uid [" + databaseUid + "]", getClass());
             return null;
         }
-        final TableTemplate.Mapping[] tableTemplateMappings = database.getTemplate().getMappings(true);
         final Map<com.divae.firstspirit.annotation.FormField, Object> columnValueMapping = DATABASE_SERVANT.getColumnValueMapping(objectClass, object);
-        final Entity entity = ENTITY_SERVANT.findEntity(database.getSchema(), database.getEntityType().getName(), tableTemplateMappings, columnValueMapping, language);
-        return entity != null ? database.getDataset(entity) : null;
+        return DATASET_SERVANT.findDataset(databaseUid, columnValueMapping, database.getTemplate(), language);
     }
 
     <O> O map(final Entity entity, final TableTemplate tableTemplate, final Language language, final SpecialistsBroker specialistsBroker, final Constructor<O> constructor) {
