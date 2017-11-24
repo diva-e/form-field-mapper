@@ -2,15 +2,14 @@ package com.divae.firstspirit.formdatalist;
 
 import com.divae.firstspirit.annotation.FormField;
 import com.divae.firstspirit.content2.Content2Servant;
-import com.divae.firstspirit.entity.EntityServant;
+import com.divae.firstspirit.dataset.DatasetServant;
 import de.espirit.firstspirit.access.Language;
 import de.espirit.firstspirit.access.editor.fslist.IdProvidingFormData;
 import de.espirit.firstspirit.access.editor.value.ContentFormsProducer;
 import de.espirit.firstspirit.access.editor.value.SectionFormsProducer;
-import de.espirit.firstspirit.access.store.contentstore.Content2;
+import de.espirit.firstspirit.access.store.contentstore.Dataset;
 import de.espirit.firstspirit.access.store.templatestore.SectionTemplate;
 import de.espirit.firstspirit.access.store.templatestore.TableTemplate;
-import de.espirit.firstspirit.access.store.templatestore.TableTemplate.Mapping;
 import de.espirit.firstspirit.forms.FormDataList;
 
 import java.util.Collection;
@@ -22,7 +21,7 @@ import static org.apache.commons.lang.Validate.notNull;
 
 public final class FormDataListServant {
 
-    private final static EntityServant ENTITY_SERVANT = new EntityServant();
+    private final static DatasetServant DATASET_SERVANT = new DatasetServant();
     private final static Content2Servant CONTENT2_SERVANT = new Content2Servant();
 
     public IdProvidingFormData createInlineIdProvidingFormData(final FormDataList formDataList, final String templateUid) {
@@ -46,14 +45,12 @@ public final class FormDataListServant {
 
         final ContentFormsProducer contentFormsProducer = (ContentFormsProducer) formDataList.getProducer();
         final TableTemplate tableTemplate = contentFormsProducer.getTableTemplate();
-        final Content2 database = CONTENT2_SERVANT.getDatabase(tableTemplate, databaseUid);
-        if (database == null) {
-            logWarning("Could not get database with uid [" + databaseUid + "]", getClass());
+
+        final Dataset dataset = DATASET_SERVANT.findDataset(databaseUid, columnValueMapping, tableTemplate, language);
+        if (dataset == null) {
             return null;
         }
-
-        final Mapping[] tableTemplateMappings = tableTemplate.getMappings(true);
-        return contentFormsProducer.create(ENTITY_SERVANT.findEntity(database.getSchema(), database.getEntityType().getName(), tableTemplateMappings, columnValueMapping, language));
+        return contentFormsProducer.create(dataset.getEntity());
     }
 
     Optional<SectionTemplate> getSectionTemplate(final Collection<SectionTemplate> sectionTemplates, final String uid) {
