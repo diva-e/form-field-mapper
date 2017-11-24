@@ -60,7 +60,7 @@ public class OptionDatabaseMappingStrategyTest {
 
         final GomFormElementBuilder gomFormElement = gomFormElementWith("fs_id").anIncludeConfiguration(() ->
                 gomIncludeConfigurationAndOptionFactoryProviderWith().anOptionFactory(optionFactoryWith().anOptionModel(() ->
-                        optionModelAndTableTemplateProviderWith().aTableTemplate(tableTemplateWith("table_emplate", 2, TEMPLATESTORE, templateStoreRootWith(1, project)).incomingReferences(() ->
+                        optionModelAndTableTemplateProviderWith().aTableTemplate(tableTemplateWith("table_template", 2, TEMPLATESTORE, templateStoreRootWith(1, project)).incomingReferences(() ->
                                 new ReferenceEntryBuilder[]{referenceEntryWith(5).aReferencedElement(content2)})
                         ), specialistsBroker, language, true)));
 
@@ -92,7 +92,7 @@ public class OptionDatabaseMappingStrategyTest {
 
         final GomFormElementBuilder gomFormElement = gomFormElementWith("fs_id").anIncludeConfiguration(() ->
                 gomIncludeConfigurationAndOptionFactoryProviderWith().anOptionFactory(optionFactoryWith().anOptionModel(() ->
-                        optionModelAndTableTemplateProviderWith().aTableTemplate(tableTemplateWith("table_emplate", 2, TEMPLATESTORE, templateStoreRootWith(1, project)).incomingReferences(() ->
+                        optionModelAndTableTemplateProviderWith().aTableTemplate(tableTemplateWith("table_template", 2, TEMPLATESTORE, templateStoreRootWith(1, project)).incomingReferences(() ->
                                 new ReferenceEntryBuilder[]{referenceEntryWith(5).aReferencedElement(content2)})
                         ), specialistsBroker, language, true)));
 

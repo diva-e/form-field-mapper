@@ -3,6 +3,7 @@ package com.divae.firstspirit;
 import com.divae.firstspirit.AnnotatedMemberModule.AnnotatedMember;
 import com.divae.firstspirit.formdata.FormDataServant;
 import com.divae.firstspirit.strategy.BooleanMappingStrategy;
+import com.divae.firstspirit.strategy.DatasetContainerMappingStrategy;
 import com.divae.firstspirit.strategy.DateMappingStrategy;
 import com.divae.firstspirit.strategy.DomElementMappingStrategy;
 import com.divae.firstspirit.strategy.FormDataListDatabaseMappingStrategy;
@@ -36,7 +37,7 @@ public class FormFieldMapper {
 			new DateMappingStrategy(), new DomElementMappingStrategy(), new NumberMappingStrategy(),
 			new StringMappingStrategy(), new OptionsMappingStrategy(), new OptionMappingStrategy(),
 			new OptionDatabaseMappingStrategy(), new FormDataListInlineMappingStrategy(),
-			new FormDataListDatabaseMappingStrategy());
+            new FormDataListDatabaseMappingStrategy(), new DatasetContainerMappingStrategy());
 
 	public <T> void map(final T from, final FormData to, final Language language, final SpecialistsBroker specialistsBroker) {
 		notNull(from);
