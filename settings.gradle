@@ -1,0 +1,4 @@
+include ':firstspirit-mocks'
+project(':firstspirit-mocks').projectDir = file('../firstspirit-mocks')
+
+rootProject.name = 'form-field-mapper'

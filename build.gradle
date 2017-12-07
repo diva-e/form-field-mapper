@@ -1,0 +1,36 @@
+apply plugin: 'java'
+apply from: "../firstspirit-dependencies/build.gradle"
+
+group = 'com.diva-e.firstspirit'
+version = '1.1.4-SNAPSHOT'
+
+description = "FirstSpirit Form Field Mapper"
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+
+repositories {
+    jcenter()
+    mavenLocal()
+}
+
+dependencies {
+    testCompile project(':firstspirit-mocks')
+    testCompile group: 'com.diva-e.firstspirit', name: 'firstspirit-mocks', version: '1.1.1'
+    testCompile group: 'org.hamcrest', name: 'java-hamcrest', version: '2.0.0.0'
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    compileOnly libraries.fs_api
+    compileOnly libraries.fs_access
+    testCompile libraries.fs_api
+    testCompile libraries.fs_access
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '4.4'
+    distributionType = Wrapper.DistributionType.ALL
+}
