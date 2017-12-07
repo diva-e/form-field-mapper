@@ -26,11 +26,12 @@ This is a FirstSpirit form field mapper that transfer data from a java class via
 
 ### Via Maven Repo (local or remote)
 #### Maven
-``` <dependency>
-	    <groupId>com.diva-e.firstspirit</groupId>
-	    <artifactId>form-field-mapper</artifactId>
-	    <version>${form-field-mapper-version}</version>
-    </dependency>
+```
+<dependency>
+    <groupId>com.diva-e.firstspirit</groupId>
+    <artifactId>form-field-mapper</artifactId>
+    <version>${form-field-mapper-version}</version>
+</dependency>
 ```
 
 
@@ -42,8 +43,9 @@ Usage start with creation of a reusable (stateless) FormFieldMapper instance:
 
 ### Usage, reading from FirstSpirit
 
-``` FormData formData = <getFormDataViaAPI()>
-    Language language = <getLanguageForAllFormFieldFromViaAPIOrNull()>
+```
+FormData formData = <getFormDataViaAPI()>
+Language language = <getLanguageForAllFormFieldFromViaAPIOrNull()>
 ```
 
 ```
@@ -76,8 +78,9 @@ DTO dto = new DTO() {
 }
 ```
 
-``` FormData formData = <getFormDataViaAPI()>
-    Language language = <getLanguageForAllFormFieldFromViaAPIOrNull()>
+```
+FormData formData = <getFormDataViaAPI()>
+Language language = <getLanguageForAllFormFieldFromViaAPIOrNull()>
 ```
 
 `formFieldMapper.map(dto, formData, language);`
@@ -101,8 +104,9 @@ public class DTO {
 }
 ```
 
-``` FormData formData = <getFormDataViaAPI()>
-    Language language = <getLanguageForAllFormFieldFromViaAPIOrNull()>
+```
+FormData formData = <getFormDataViaAPI()>
+Language language = <getLanguageForAllFormFieldFromViaAPIOrNull()>
 ```
 
 `formFieldMapper.map(dto, formData, language);`
@@ -121,8 +125,9 @@ public static class SupportedClass {
 }
 ```
 
-``` FormData formData = <getFormDataViaAPI()>
-    Language language = <getLanguageForAllFormFieldFromViaAPIOrNull()>
+```
+FormData formData = <getFormDataViaAPI()>
+Language language = <getLanguageForAllFormFieldFromViaAPIOrNull()>
 ```
 
 `formFieldMapper.map(dto, formData, language);`
